@@ -7,17 +7,17 @@ import torch
 
 dtype = numpy.float32
 
-mode_a = ('a', 'b')
-mode_b = ('b', 'c', 'd')
-mode_c = ('a', 'c', 'd')
-extent = {'a': 16, 'b': 20, 'c': 16, 'd': 20}
-con_type = "ab * bcd -> acd"
+# mode_a = ('a', 'b')
+# mode_b = ('b', 'c', 'd')
+# mode_c = ('a', 'c', 'd')
+# extent = {'a': 16, 'b': 20, 'c': 16, 'd': 20}
+# con_type = "ab * bcd -> acd"
 
-# mode_a = ('a', 'b', 'c')
-# mode_b = ('c', 'd', 'e')
-# mode_c = ('a', 'b', 'd', 'e')
-# extent = {'a': 16, 'b': 16, 'c': 20, 'd': 12, 'e': 20}
-# con_type = "abc * cde -> abde"
+mode_a = ('a', 'b', 'c')
+mode_b = ('c', 'd', 'e')
+mode_c = ('a', 'b', 'd', 'e')
+extent = {'a': 16, 'b': 16, 'c': 20, 'd': 12, 'e': 20}
+con_type = "abc * cde -> abde"
 
 a = cupy.random.random([extent[i] for i in mode_a])
 b = cupy.random.random([extent[i] for i in mode_b])
@@ -38,7 +38,7 @@ beta = 0
 
 def con():
     with nvtx.annotate(con_type, color = "purple"):
-        cutensor.contraction(alpha, a, desc_a, mode_a, b, desc_b, mode_b, beta, c, desc_c, mode_c, algo = -4)
+        cutensor.contraction(alpha, a, desc_a, mode_a, b, desc_b, mode_b, beta, c, desc_c, mode_c)
 
 torch.cuda.cudart().cudaProfilerStart()
 perf = cupyx.time.repeat(con,n_warmup=1, n_repeat=5)
