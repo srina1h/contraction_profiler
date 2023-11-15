@@ -4,11 +4,11 @@ import nvtx
 import torch
 
 dtype = numpy.float32
-a = torch.rand((16, 20), device = 'cuda')
-b = torch.rand((20, 16, 20), device = 'cuda')
-con_type = "ab * bcd -> acd"
-# con_type = "abc * cde -> abde"
-extent = {'a': 16, 'b': 20, 'c': 16, 'd': 20}
+a = torch.rand((16, 16, 20), device = 'cuda')
+b = torch.rand((20, 12, 20), device = 'cuda')
+# con_type = "ab * bcd -> acd"
+con_type = "abc * cde -> abde"
+extent = {'a': 16, 'b': 16, 'c': 20, 'd': 12, 'e': 20}
 
 def con():
     with nvtx.annotate(con_type, color = "purple"):
