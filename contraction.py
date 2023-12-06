@@ -10,7 +10,7 @@ dtype = numpy.float32
 mode_a = ('a', 'b')
 mode_b = ('b', 'c', 'd')
 mode_c = ('a', 'c', 'd')
-extent = {'a': 100, 'b': 200, 'c': 100, 'd': 100}
+extent = {'a': 134, 'b': 243, 'c': 186, 'd': 211}
 con_type = "ab * bcd -> acd"
 
 # mode_a = ('a', 'b', 'c')
