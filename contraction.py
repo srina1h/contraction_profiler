@@ -38,7 +38,7 @@ beta = 0
 
 def con():
     with nvtx.annotate(con_type, color = "purple"):
-        cutensor.contraction(alpha, a, desc_a, mode_a, b, desc_b, mode_b, beta, c, desc_c, mode_c)
+        cutensor.contraction(alpha, a, desc_a, mode_a, b, desc_b, mode_b, beta, c, desc_c, mode_c, algo = -2)
 
 torch.cuda.cudart().cudaProfilerStart()
 perf = cupyx.time.repeat(con,n_warmup=1, n_repeat=5)
