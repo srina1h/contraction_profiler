@@ -10,7 +10,7 @@ dtype = numpy.float32
 mode_a = ('a', 'b')
 mode_b = ('b', 'c', 'd')
 mode_c = ('a', 'c', 'd')
-extent = {'a': 134, 'b': 243, 'c': 186, 'd': 211}
+extent = {'a': 24, 'b': 100, 'c': 48, 'd': 72}
 con_type = "ab * bcd -> acd"
 
 # mode_a = ('a', 'b', 'c')
@@ -38,7 +38,7 @@ beta = 0
 
 def con():
     with nvtx.annotate(con_type, color = "purple"):
-        cutensor.contraction(alpha, a, desc_a, mode_a, b, desc_b, mode_b, beta, c, desc_c, mode_c)
+        cutensor.contraction(alpha, a, desc_a, mode_a, b, desc_b, mode_b, beta, c, desc_c, mode_c, algo = -4)
 
 torch.cuda.cudart().cudaProfilerStart()
 perf = cupyx.time.repeat(con,n_warmup=1, n_repeat=5)
