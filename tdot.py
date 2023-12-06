@@ -4,8 +4,8 @@ import nvtx
 import torch
 
 dtype = numpy.float32
-a = torch.rand((16, 16, 20), device = 'cuda')
-b = torch.rand((20, 12, 20), device = 'cuda')
+a = torch.rand((100, 100, 200), device = 'cuda')
+b = torch.rand((200, 100, 100), device = 'cuda')
 # con_type = "ab * bcd -> acd"
 con_type = "abc * cde -> abde"
 extent = {'a': 16, 'b': 16, 'c': 20, 'd': 12, 'e': 20}
