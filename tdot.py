@@ -8,7 +8,7 @@ a = torch.rand((100, 100, 200), device = 'cuda')
 b = torch.rand((200, 100, 100), device = 'cuda')
 # con_type = "ab * bcd -> acd"
 con_type = "abc * cde -> abde"
-extent = {'a': 16, 'b': 16, 'c': 20, 'd': 12, 'e': 20}
+extent = {'a': 100, 'b': 100, 'c': 200, 'd': 100, 'e': 100}
 
 def con():
     with nvtx.annotate(con_type, color = "purple"):
