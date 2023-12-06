@@ -7,17 +7,17 @@ import torch
 
 dtype = numpy.float32
 
-# mode_a = ('a', 'b')
-# mode_b = ('b', 'c', 'd')
-# mode_c = ('a', 'c', 'd')
-# extent = {'a': 16, 'b': 20, 'c': 16, 'd': 20}
-# con_type = "ab * bcd -> acd"
+mode_a = ('a', 'b')
+mode_b = ('b', 'c', 'd')
+mode_c = ('a', 'c', 'd')
+extent = {'a': 100, 'b': 200, 'c': 100, 'd': 100}
+con_type = "ab * bcd -> acd"
 
-mode_a = ('a', 'b', 'c')
-mode_b = ('c', 'd', 'e')
-mode_c = ('a', 'b', 'd', 'e')
-extent = {'a': 146, 'b': 251, 'c': 187, 'd': 172, 'e': 87}
-con_type = "abc * cde -> abde"
+# mode_a = ('a', 'b', 'c')
+# mode_b = ('c', 'd', 'e')
+# mode_c = ('a', 'b', 'd', 'e')
+# extent = {'a': 146, 'b': 251, 'c': 187, 'd': 172, 'e': 87}
+# con_type = "abc * cde -> abde"
 
 a = cupy.random.random([extent[i] for i in mode_a])
 b = cupy.random.random([extent[i] for i in mode_b])
