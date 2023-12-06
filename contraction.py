@@ -16,7 +16,7 @@ dtype = numpy.float32
 mode_a = ('a', 'b', 'c')
 mode_b = ('c', 'd', 'e')
 mode_c = ('a', 'b', 'd', 'e')
-extent = {'a': 234, 'b': 357, 'c': 265, 'd': 187, 'e': 276}
+extent = {'a': 146, 'b': 251, 'c': 187, 'd': 172, 'e': 87}
 con_type = "abc * cde -> abde"
 
 a = cupy.random.random([extent[i] for i in mode_a])
