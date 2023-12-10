@@ -223,7 +223,7 @@ int main()
      * Set the algorithm to use
      ***************************/
 
-    const cutensorAlgo_t algo = CUTENSOR_ALGO_GETT;
+    const cutensorAlgo_t algo = CUTENSOR_ALGO_TTGT;
 
     cutensorPlanPreference_t planPref;
     HANDLE_ERROR(cutensorCreatePlanPreference(
