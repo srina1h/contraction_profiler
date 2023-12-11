@@ -90,7 +90,7 @@ perf3 = cupyx.time.repeat(con3,n_warmup=1, n_repeat=5)
 torch.cuda.cudart().cudaProfilerStop()
 
 total_flops = 2 * numpy.prod(numpy.array(list(extent.values())))
-elapsed = perf4.gpu_times.mean()
+elapsed = perf3.gpu_times.mean()
 print("CuTensor-ALGO_TTGT:")
 print('dtype: {}'.format(numpy.dtype(dtype).name))
 print(perf3)
