@@ -8,7 +8,7 @@ import torch
 dtype = numpy.float32
 
 atorch = torch.rand((4096, 20), device = 'cuda')
-btorch = torch.rand((20, 8, 8, 12), device = 'cuda')
+btorch = torch.rand((20, 12, 16, 16), device = 'cuda')
 
 # mode_a = ('a', 'b')
 # mode_b = ('b', 'c', 'd')
@@ -25,7 +25,7 @@ btorch = torch.rand((20, 8, 8, 12), device = 'cuda')
 mode_a = ('a', 'b')
 mode_b = ('b', 'c', 'd', 'e')
 mode_c = ('a', 'c', 'd', 'e')
-extent = {'a': 4096, 'b': 20, 'c': 8, 'd': 8, 'e': 12}
+extent = {'a': 4096, 'b': 20, 'c': 12, 'd': 16, 'e': 16}
 con_type = "ab * bcde -> acde"
 
 a = cupy.random.random([extent[i] for i in mode_a])
