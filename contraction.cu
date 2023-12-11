@@ -212,8 +212,8 @@ int main()
 
     assert(scalarType == CUTENSOR_R_32F);
     typedef float floatTypeCompute;
-    floatTypeCompute alpha = (floatTypeCompute)1.1f;
-    floatTypeCompute beta = (floatTypeCompute)0.f;
+    floatTypeCompute alpha = 1;
+    floatTypeCompute beta = 0;
 
     /**************************
      * Set the algorithm to use
@@ -293,8 +293,8 @@ int main()
 
         HANDLE_ERROR(cutensorContract(handle,
                                       plan,
-                                      1, A_d, B_d,
-                                      0, C_d, C_d,
+                                      (void *)&alpha, A_d, B_d,
+                                      (void *)&beta, C_d, C_d,
                                       work, actualWorkspaceSize, stream));
 
         // Synchronize and measure timing
