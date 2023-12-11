@@ -72,10 +72,6 @@ int main()
     cutensorDataType_t typeC = CUTENSOR_R_32F;
     const cutensorComputeDescriptor_t descCompute = CUTENSOR_COMPUTE_DESC_32F;
 
-    /**********************
-     * Computing: C_{m,u,n,v} = alpha * A_{m,h,k,n} B_{u,k,v,h} + beta * C_{m,u,n,v}
-     **********************/
-
     std::vector<int> modeC{'a', 'c', 'd'};
     std::vector<int> modeA{'a', 'b'};
     std::vector<int> modeB{'b', 'c', 'd'};

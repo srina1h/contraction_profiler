@@ -52,14 +52,14 @@ def con():
         cutensor.contraction(alpha, a, desc_a, mode_a, b, desc_b, mode_b, beta, c, desc_c, mode_c, algo = -2)
 
 torch.cuda.cudart().cudaProfilerStart()
-perf = cupyx.time.repeat(con,n_warmup=1, n_repeat=5)
+perf1 = cupyx.time.repeat(con,n_warmup=1, n_repeat=5)
 torch.cuda.cudart().cudaProfilerStop()
 
 total_flops = 2 * numpy.prod(numpy.array(list(extent.values())))
-elapsed = perf.gpu_times.mean()
+elapsed = perf1.gpu_times.mean()
 print("cutensor-GETT")
 print('dtype: {}'.format(numpy.dtype(dtype).name))
-print(perf)
+print(perf1)
 print('GFLOPS: {}'.format(total_flops / elapsed / 1e9))
 
 # ALGO_DEFAULT
@@ -69,14 +69,14 @@ def con2():
         cutensor.contraction(alpha, a, desc_a, mode_a, b, desc_b, mode_b, beta, c, desc_c, mode_c, algo = -1)
 
 torch.cuda.cudart().cudaProfilerStart()
-perf = cupyx.time.repeat(con2,n_warmup=1, n_repeat=5)
+perf2 = cupyx.time.repeat(con2,n_warmup=1, n_repeat=5)
 torch.cuda.cudart().cudaProfilerStop()
 
 total_flops = 2 * numpy.prod(numpy.array(list(extent.values())))
-elapsed = perf.gpu_times.mean()
+elapsed = perf2.gpu_times.mean()
 print("Cutensor-ALGO_DEFAULT:")
 print('dtype: {}'.format(numpy.dtype(dtype).name))
-print(perf)
+print(perf2)
 print('GFLOPS: {}'.format(total_flops / elapsed / 1e9))
 
 # ALGO_TTGT
@@ -86,14 +86,14 @@ def con3():
         cutensor.contraction(alpha, a, desc_a, mode_a, b, desc_b, mode_b, beta, c, desc_c, mode_c, algo = -2)
 
 torch.cuda.cudart().cudaProfilerStart()
-perf = cupyx.time.repeat(con3,n_warmup=1, n_repeat=5)
+perf3 = cupyx.time.repeat(con3,n_warmup=1, n_repeat=5)
 torch.cuda.cudart().cudaProfilerStop()
 
 total_flops = 2 * numpy.prod(numpy.array(list(extent.values())))
-elapsed = perf.gpu_times.mean()
+elapsed = perf4.gpu_times.mean()
 print("CuTensor-ALGO_TTGT:")
 print('dtype: {}'.format(numpy.dtype(dtype).name))
-print(perf)
+print(perf3)
 print('GFLOPS: {}'.format(total_flops / elapsed / 1e9))
 
 # Tensordot
@@ -103,13 +103,13 @@ def con4():
         torch.tensordot(atorch,btorch,[[-1],[0]])
 
 torch.cuda.cudart().cudaProfilerStart()
-perf = cupyx.time.repeat(con4,n_warmup=1, n_repeat=5)
+perf4 = cupyx.time.repeat(con4,n_warmup=1, n_repeat=5)
 torch.cuda.cudart().cudaProfilerStop()
 
 total_flops = 2 * numpy.prod(numpy.array(list(extent.values())))
-elapsed = perf.gpu_times.mean()
+elapsed = perf4.gpu_times.mean()
 
 print("Tensordot:")
 print('dtype: {}'.format(numpy.dtype(dtype).name))
-print(perf)
+print(perf4)
 print('GFLOPS: {}'.format(total_flops / elapsed / 1e9))
