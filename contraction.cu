@@ -293,8 +293,8 @@ int main()
 
         HANDLE_ERROR(cutensorContract(handle,
                                       plan,
-                                      (void *)&alpha, A_d, B_d,
-                                      (void *)&beta, C_d, C_d,
+                                      1, A_d, B_d,
+                                      0, C_d, C_d,
                                       work, actualWorkspaceSize, stream));
 
         // Synchronize and measure timing
