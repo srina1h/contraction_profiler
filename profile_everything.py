@@ -7,14 +7,14 @@ import torch
 
 dtype = numpy.float32
 
-atorch = torch.rand((4096, 20), device = 'cuda')
-btorch = torch.rand((20, 12, 16, 16), device = 'cuda')
+atorch = torch.rand((100, 200), device = 'cuda')
+btorch = torch.rand((200, 100, 100), device = 'cuda')
 
-# mode_a = ('a', 'b')
-# mode_b = ('b', 'c', 'd')
-# mode_c = ('a', 'c', 'd')
-# extent = {'a': 100, 'b': 200, 'c': 100, 'd': 100}
-# con_type = "ab * bcd -> acd"
+mode_a = ('a', 'b')
+mode_b = ('b', 'c', 'd')
+mode_c = ('a', 'c', 'd')
+extent = {'a': 100, 'b': 200, 'c': 100, 'd': 100}
+con_type = "ab * bcd -> acd"
 
 # mode_a = ('a', 'b', 'c')
 # mode_b = ('c', 'd', 'e')
@@ -22,11 +22,11 @@ btorch = torch.rand((20, 12, 16, 16), device = 'cuda')
 # extent = {'a': 146, 'b': 251, 'c': 187, 'd': 172, 'e': 87}
 # con_type = "abc * cde -> abde"
 
-mode_a = ('a', 'b')
-mode_b = ('b', 'c', 'd', 'e')
-mode_c = ('a', 'c', 'd', 'e')
-extent = {'a': 4096, 'b': 20, 'c': 12, 'd': 16, 'e': 16}
-con_type = "ab * bcde -> acde"
+# mode_a = ('a', 'b')
+# mode_b = ('b', 'c', 'd', 'e')
+# mode_c = ('a', 'c', 'd', 'e')
+# extent = {'a': 4096, 'b': 20, 'c': 12, 'd': 16, 'e': 16}
+# con_type = "ab * bcde -> acde"
 
 a = cupy.random.random([extent[i] for i in mode_a])
 b = cupy.random.random([extent[i] for i in mode_b])
