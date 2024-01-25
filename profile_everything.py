@@ -105,8 +105,7 @@ print('GFLOPS: {}'.format(total_flops / elapsed / 1e9))
 
 def con4():
     with nvtx.annotate(con_type, color = "purple"):
-        btorch.reshape(btorch.shape[0], -1)
-        torch.tensordot(atorch,btorch,[[1],[1]])
+        torch.tensordot(atorch,btorch.reshape(btorch.shape[0], -1),[[1],[1]])
 
 torch.cuda.cudart().cudaProfilerStart()
 perf4 = cupyx.time.repeat(con4,n_warmup=1, n_repeat=5)
