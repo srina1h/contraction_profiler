@@ -113,8 +113,8 @@ print('GFLOPS: {}'.format(total_flops / elapsed / 1e9))
 # Tensordot
 
 def con4():
+    btorch = btorch.reshape(20, 768)
     with nvtx.annotate(con_type, color = "purple"):
-        btorch = btorch.reshape(20, 768)
         torch.tensordot(atorch,btorch, dims = ([1],[1]))
 
 torch.cuda.cudart().cudaProfilerStart()
