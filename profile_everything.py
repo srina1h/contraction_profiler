@@ -12,23 +12,23 @@ dtype = numpy.float32
 # B reshape torch.Size([20, 768])
 # final torch.Size([4096, 20])
 
-atorch = torch.rand((4096, 768), device = 'cuda')
-btorch = torch.rand((20, 768), device = 'cuda')
-
-mode_a = ('a', 'b')
-mode_b = ('c', 'd', 'e', 'f')
-mode_c = ('a', 'c')
-extent = {'a': 4096, 'b': 768, 'c': 20, 'd': 8, 'e': 8, 'f': 12}
-con_type = "ab * cdef -> ac"
-
 # atorch = torch.rand((4096, 768), device = 'cuda')
 # btorch = torch.rand((20, 768), device = 'cuda')
 
 # mode_a = ('a', 'b')
-# mode_b = ('c', 'b')
+# mode_b = ('c', 'd', 'e', 'f')
 # mode_c = ('a', 'c')
-# extent = {'a': 4096, 'b': 768, 'c': 20}
-# con_type = "ab * cb -> ac"
+# extent = {'a': 4096, 'b': 768, 'c': 20, 'd': 8, 'e': 8, 'f': 12}
+# con_type = "ab * cdef -> ac"
+
+atorch = torch.rand((4096, 768), device = 'cuda')
+btorch = torch.rand((20, 768), device = 'cuda')
+
+mode_a = ('a', 'b')
+mode_b = ('c', 'b')
+mode_c = ('a', 'c')
+extent = {'a': 4096, 'b': 768, 'c': 20}
+con_type = "ab * cb -> ac"
 
 # mode_a = ('a', 'b', 'c')
 # mode_b = ('c', 'd', 'e')
