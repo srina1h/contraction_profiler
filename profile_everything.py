@@ -17,9 +17,9 @@ btorch = torch.rand((20, 12, 16, 16, 1), device = 'cuda')
 
 mode_a = ('a', 'b')
 mode_b = ('c', 'd', 'e', 'f', 'g')
-mode_c = ('c', 'b')
+mode_c = ('a', 'c')
 extent = {'a': 4096, 'b': 3072, 'c': 20, 'd': 12, 'e': 16, 'f': 16, 'g': 1}
-con_type = "ab *cdefg -> cb"
+con_type = "ab *cdefg -> ac"
 
 # mode_a = ('a', 'b', 'c')
 # mode_b = ('c', 'd', 'e')
