@@ -5,21 +5,20 @@ import cupyx.time
 import nvtx
 import torch
 
-# torch.Size([4096, 3072])
-# torch.Size([20, 12, 16, 16, 1])
-# torch.Size([20, 3072])
-# torch.Size([4096, 20])
+# torch.Size([20, 8, 8, 20])
+# torch.Size([20, 8, 20])
+# torch.Size([20, 8, 20])
 
 dtype = numpy.float32
 
-atorch = torch.rand((4096, 3072), device = 'cuda')
-btorch = torch.rand((20, 12, 16, 16, 1), device = 'cuda')
+atorch = torch.rand((20, 8, 8, 20), device = 'cuda')
+btorch = torch.rand((20, 8, 20), device = 'cuda')
 
-mode_a = ('a', 'b')
-mode_b = ('c', 'd', 'e', 'f', 'g')
-mode_c = ('a', 'c')
-extent = {'a': 4096, 'b': 3072, 'c': 20, 'd': 12, 'e': 16, 'f': 16, 'g': 1}
-con_type = "ab *cdefg -> ac"
+mode_a = ('a', 'b', 'c', 'd')
+mode_b = ('e', 'c', 'd')
+mode_c = ('a', 'b', 'e')
+extent = {'a': 20, 'b': 8, 'c': 8, 'd': 20, 'e': 20}
+con_type = "abcd * ecg -> abe"
 
 # mode_a = ('a', 'b', 'c')
 # mode_b = ('c', 'd', 'e')
@@ -105,7 +104,7 @@ print('GFLOPS: {}'.format(total_flops / elapsed / 1e9))
 
 def con4():
     with nvtx.annotate(con_type, color = "purple"):
-        torch.tensordot(atorch,btorch.reshape(btorch.shape[0], -1),[[1],[1]])
+        torch.tensordot(atorch,btorch,[[2,3],[1,2]])
 
 torch.cuda.cudart().cudaProfilerStart()
 perf4 = cupyx.time.repeat(con4,n_warmup=1, n_repeat=5)
