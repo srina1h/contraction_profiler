@@ -74,7 +74,9 @@ elapsed = perf1.gpu_times.mean()
 print("cutensor-GETT")
 print('dtype: {}'.format(numpy.dtype(dtype).name))
 print(perf1)
-print('GFLOPS: {}'.format(total_flops / elapsed / 1e9))
+print('Avg CPU time: {}'.format(perf1.cpu_times.mean()))
+print('Avg Gpu time: {}'.format(perf1.gpu_times.mean()))
+print('Total avg time: {}'.format(perf1.cpu_times.mean() + perf1.gpu_times.mean()))
 
 # ALGO_DEFAULT
 
@@ -91,7 +93,9 @@ elapsed = perf2.gpu_times.mean()
 print("Cutensor-ALGO_DEFAULT:")
 print('dtype: {}'.format(numpy.dtype(dtype).name))
 print(perf2)
-print('GFLOPS: {}'.format(total_flops / elapsed / 1e9))
+print('Avg CPU time: {}'.format(perf2.cpu_times.mean()))
+print('Avg Gpu time: {}'.format(perf2.gpu_times.mean()))
+print('Total avg time: {}'.format(perf2.cpu_times.mean() + perf2.gpu_times.mean()))
 
 # ALGO_TTGT
 
@@ -108,7 +112,9 @@ elapsed = perf3.gpu_times.mean()
 print("CuTensor-ALGO_TTGT:")
 print('dtype: {}'.format(numpy.dtype(dtype).name))
 print(perf3)
-print('GFLOPS: {}'.format(total_flops / elapsed / 1e9))
+print('Avg CPU time: {}'.format(perf3.cpu_times.mean()))
+print('Avg Gpu time: {}'.format(perf3.gpu_times.mean()))
+print('Total avg time: {}'.format(perf3.cpu_times.mean() + perf3.gpu_times.mean()))
 
 # Tensordot
 
@@ -126,4 +132,6 @@ elapsed = perf4.gpu_times.mean()
 print("Tensordot:")
 print('dtype: {}'.format(numpy.dtype(dtype).name))
 print(perf4)
-print('GFLOPS: {}'.format(total_flops / elapsed / 1e9))
+print('Avg CPU time: {}'.format(perf4.cpu_times.mean()))
+print('Avg Gpu time: {}'.format(perf4.gpu_times.mean()))
+print('Total avg time: {}'.format(perf4.cpu_times.mean() + perf4.gpu_times.mean()))
