@@ -18,7 +18,7 @@ mode_a = ('a', 'b', 'c', 'd')
 mode_b = ('e', 'c', 'd')
 mode_c = ('a', 'b', 'e')
 extent = {'a': 20, 'b': 8, 'c': 8, 'd': 20, 'e': 20}
-con_type = "abcd * ecg -> abe"
+con_type = "abcd * ecd -> abe"
 
 # mode_a = ('a', 'b', 'c')
 # mode_b = ('c', 'd', 'e')
