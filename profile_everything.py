@@ -19,7 +19,7 @@ btorch = torch.rand((768, 20), device = 'cuda')
 mode_a = ('a', 'b', 'c')
 mode_b = ('d', 'e')
 mode_c = ('c', 'f', 'g', 'e')
-extent = {'a': 12, 'b': 8, 'c': 20, 'd': 678, 'e': 20, 'f': 8, 'g': 1}
+extent = {'a': 12, 'b': 8, 'c': 20, 'd': 768, 'e': 20, 'f': 8, 'g': 1}
 con_type = "abc * de -> cfge"
 
 # mode_a = ('a', 'b', 'c')
