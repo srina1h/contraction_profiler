@@ -47,7 +47,7 @@ desc_c = cutensor.create_tensor_descriptor(c)
 mode_a = cutensor.create_mode(*mode_a)
 mode_b = cutensor.create_mode(*mode_b)
 mode_c = cutensor.create_mode(*mode_c)
-alpha = 1.1
+alpha = 1
 beta = 0
 
 # GETT
