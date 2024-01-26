@@ -13,7 +13,7 @@ dtype = numpy.float32
 # final torch.Size([4096, 20])
 
 atorch = torch.rand((4096, 768), device = 'cuda')
-btorch = torch.rand((20, 8, 8, 12), device = 'cuda')
+btorch = torch.rand((20, 768), device = 'cuda')
 
 mode_a = ('a', 'b')
 mode_b = ('c', 'd', 'e', 'f')
@@ -113,9 +113,8 @@ print('GFLOPS: {}'.format(total_flops / elapsed / 1e9))
 # Tensordot
 
 def con4():
-    nbtorch = btorch.reshape(20, 768)
     with nvtx.annotate(con_type, color = "purple"):
-        torch.tensordot(atorch, nbtorch, dims = ([1],[1]))
+        torch.tensordot(atorch, btorch, dims = ([1],[1]))
 
 torch.cuda.cudart().cudaProfilerStart()
 perf4 = cupyx.time.repeat(con4,n_warmup=1, n_repeat=5)
