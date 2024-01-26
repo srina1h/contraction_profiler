@@ -7,19 +7,20 @@ import torch
 
 dtype = numpy.float32
 
-# A torch.Size([12, 8, 8, 20])
-# A reshape torch.Size([768, 20])
-# B torch.Size([4096, 768])
-# Op torch.Size([20, 4096])
+# A torch.Size([12, 8, 20])
+# A reshaped torch.Size([96, 20])
+# B torch.Size([768, 20])
+# B reshaped torch.Size([96, 8, 1, 20])
+# Final torch.Size([20, 8, 1, 20])
 
-atorch = torch.rand((12, 8, 8, 20), device = 'cuda')
-btorch = torch.rand((4096, 768), device = 'cuda')
+atorch = torch.rand((12, 8, 20), device = 'cuda')
+btorch = torch.rand((768, 20), device = 'cuda')
 
-mode_a = ('a', 'b', 'c', 'd')
-mode_b = ('e', 'f')
-mode_c = ('d', 'e')
-extent = {'a': 12, 'b': 8, 'c': 8, 'd': 20, 'e': 4096, 'f': 768}
-con_type = "abcd * ef -> de"
+mode_a = ('a', 'b', 'c')
+mode_b = ('d', 'e')
+mode_c = ('c', 'f', 'g', 'e')
+extent = {'a': 12, 'b': 8, 'c': 20, 'd': 678, 'e': 20, 'f': 8, 'g': 1}
+con_type = "abc * de -> cfge"
 
 # mode_a = ('a', 'b', 'c')
 # mode_b = ('c', 'd', 'e')
@@ -105,7 +106,7 @@ print('GFLOPS: {}'.format(total_flops / elapsed / 1e9))
 
 def con4():
     with nvtx.annotate(con_type, color = "purple"):
-        torch.tensordot(atorch.reshape(-1, atorch.shape[-1]),btorch,[[0],[1]])
+        torch.tensordot(atorch.reshape(96, 20),btorch.reshape(96, 8, 1, 20),[[0],[0]])
 
 torch.cuda.cudart().cudaProfilerStart()
 perf4 = cupyx.time.repeat(con4,n_warmup=1, n_repeat=5)
