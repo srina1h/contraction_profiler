@@ -151,3 +151,6 @@ if cu == to:
     print("Results are equal")
 else:
     print("Results are not equal")
+    print(cu)
+    print("-----------------")
+    print(to)
