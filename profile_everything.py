@@ -147,7 +147,7 @@ if cu.shape == to.shape:
 else:
     print("Shapes are not equal")
 
-if cupy.asnumpy(cu) == to.numpy:
+if numpy.array_equal(cupy.asnumpy(cu), to.numpy):
     print("Results are equal")
 else:
     print("Results are not equal")
