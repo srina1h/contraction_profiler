@@ -147,10 +147,10 @@ if cu.shape == to.shape:
 else:
     print("Shapes are not equal")
 
-if cu == to:
+if cupy.asnumpy(cu) == to.numpy:
     print("Results are equal")
 else:
     print("Results are not equal")
-    print(cu)
+    print(cupy.asnumpy(cu))
     print("-----------------")
-    print(to)
+    print(to.numpy)
