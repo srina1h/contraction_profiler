@@ -135,3 +135,12 @@ print(perf4)
 print('Avg CPU time: {}'.format(perf4.cpu_times.mean()))
 print('Avg Gpu time: {}'.format(perf4.gpu_times.mean()))
 print('Total avg time: {}'.format(perf4.cpu_times.mean() + perf4.gpu_times.mean()))
+
+# Correctness check
+
+cu = cutensor.contraction(alpha, a, desc_a, mode_a, b, desc_b, mode_b, beta, c, desc_c, mode_c, algo = -2)
+
+to = torch.tensordot(atorch, btorch, dims = ([1],[1]))
+
+if cu.shape == to.shape:
+    print("Shapes are equal")
