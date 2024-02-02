@@ -153,4 +153,4 @@ else:
     print("Results are not equal")
     print(cupy.asnumpy(cu))
     print("-----------------")
-    print(to.numpy())
+    print(to.cpu().numpy())
