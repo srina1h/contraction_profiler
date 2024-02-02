@@ -144,3 +144,6 @@ to = torch.tensordot(atorch, btorch, dims = ([1],[1]))
 
 if cu.shape == to.shape:
     print("Shapes are equal")
+
+if cu == to:
+    print("Results are equal")
