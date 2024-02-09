@@ -5,15 +5,15 @@ import cupyx.time
 import nvtx
 import torch
 
-dtype = numpy.float32
+dtype = numpy.float16
 
 # A torch.Size([4096, 768])
 # B torch.Size([20, 8, 8, 12])
 # B reshape torch.Size([20, 768])
 # final torch.Size([4096, 20])
 
-atorch = torch.rand((4096, 768), device = 'cuda')
-btorch = torch.rand((20, 768), device = 'cuda')
+atorch = torch.rand((4096, 768), device = 'cuda', dtype = torch.float16)
+btorch = torch.rand((20, 768), device = 'cuda', dtype = torch.float16)
 
 mode_a = ('a', 'b')
 mode_b = ('c', 'd', 'e', 'f')
