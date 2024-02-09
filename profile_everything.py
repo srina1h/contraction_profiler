@@ -62,7 +62,7 @@ beta = 0
 # GETT
 
 def con():
-    with nvtx.annotate(con_type, color = "purple"):
+    with nvtx.annotate(con_type + "gett", color = "purple"):
         cutensor.contraction(alpha, a, desc_a, mode_a, b, desc_b, mode_b, beta, c, desc_c, mode_c, algo = -2)
 
 torch.cuda.cudart().cudaProfilerStart()
@@ -81,7 +81,7 @@ print('Total avg time: {}'.format(perf1.cpu_times.mean() + perf1.gpu_times.mean(
 # ALGO_DEFAULT
 
 def con2():
-    with nvtx.annotate(con_type, color = "purple"):
+    with nvtx.annotate(con_type + "def", color = "purple"):
         cutensor.contraction(alpha, a, desc_a, mode_a, b, desc_b, mode_b, beta, c, desc_c, mode_c, algo = -1)
 
 torch.cuda.cudart().cudaProfilerStart()
@@ -100,7 +100,7 @@ print('Total avg time: {}'.format(perf2.cpu_times.mean() + perf2.gpu_times.mean(
 # ALGO_TTGT
 
 def con3():
-    with nvtx.annotate(con_type, color = "purple"):
+    with nvtx.annotate(con_type + "ttgt", color = "purple"):
         cutensor.contraction(alpha, a, desc_a, mode_a, b, desc_b, mode_b, beta, c, desc_c, mode_c, algo = -2)
 
 torch.cuda.cudart().cudaProfilerStart()
@@ -119,7 +119,7 @@ print('Total avg time: {}'.format(perf3.cpu_times.mean() + perf3.gpu_times.mean(
 # Tensordot
 
 def con4():
-    with nvtx.annotate(con_type, color = "purple"):
+    with nvtx.annotate(con_type + "tdot", color = "purple"):
         torch.tensordot(atorch, btorch, dims = ([1],[1]))
 
 torch.cuda.cudart().cudaProfilerStart()
