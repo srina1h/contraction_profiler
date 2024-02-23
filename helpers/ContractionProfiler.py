@@ -6,6 +6,8 @@ import nvtx
 import torch
 from helpers.Dimensions import *
 
+algorithms = ["ALGO_DEFAULT","ALGO_TTGT", "ALGO_TGETT", "ALGO_GETT", "ALGO_DEFAULT_PATIENT" , "tensordot"]
+
 # ALGO_DEFAULT_PATIENT = -6  # NOQA, Uses the more accurate but also more time-consuming performance model
 # ALGO_GETT = -4             # NOQA, Choose the GETT algorithm
 # ALGO_TGETT = -3            # NOQA, Transpose (A or B) + GETT
@@ -131,4 +133,10 @@ class ContractionProfiler:
 
         correctness = self.check_correctness(-4)
 
-        return cutensor_default, cutensor_ttgt, cutensor_tgett, cutensor_gett, cutensor_default_patient, tensordot, correctness
+        lowest_CPU = self.fastest_time([cutensor_default[0], cutensor_ttgt[0], cutensor_tgett[0], cutensor_gett[0], cutensor_default_patient[0], tensordot[0]])
+        lowest_GPU = self.fastest_time([cutensor_default[1], cutensor_ttgt[1], cutensor_tgett[1], cutensor_gett[1], cutensor_default_patient[1], tensordot[1]])
+
+        return [self.contractionLabel, cutensor_default, cutensor_ttgt, cutensor_tgett, cutensor_gett, cutensor_default_patient, tensordot, correctness, lowest_CPU, lowest_GPU]
+
+    def fastest_time(self, inp) -> int:
+        return algorithms[inp.index(min(inp))]
