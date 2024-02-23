@@ -9,7 +9,7 @@ def main():
 
     args = parser.parse_args()
 
-    ProfileMultiple(args.file_path, args.output_filepath, args.type)
+    _ = ProfileMultiple(args.file_path, args.output_filepath, args.type)
 
 if __name__ == '__main__':
     main()
