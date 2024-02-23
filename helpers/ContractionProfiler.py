@@ -80,6 +80,7 @@ class ContractionProfiler:
             print(extent, mode, dim)
             for i in range(len(mode[0])):
                 extent[mode[i]] = dim[i]
+            return extent
         
         n_extent_a = populate_extent(extent_a, mode_a, adim)
         n_extent_b = populate_extent(extent_b, mode_b, bdim)
