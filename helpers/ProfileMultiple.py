@@ -21,7 +21,7 @@ class ProfileMultiple:
         for index, row in self.data.iterrows():
             dimensions = Dimensions(ast.literal_eval(row['adim']), ast.literal_eval(row['bdim']), ast.literal_eval(row['cdim']), ast.literal_eval(row['condim']), row['type'], row['dtype'])
             profiler = ContractionProfiler(dimensions, row['label'])
-            result = profiler.profile()
+            result = profiler.profile_all()
             self.results.append(result)
         
     def export(self) -> None:
