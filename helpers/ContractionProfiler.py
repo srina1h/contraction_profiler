@@ -25,7 +25,7 @@ class ContractionProfiler:
         self.a = cupy.random.random([self.extent[i] for i in self.mode_a])
         self.b = cupy.random.random([self.extent[i] for i in self.mode_b])
         self.c = cupy.random.random([self.extent[i] for i in self.mode_c])
-        print(self.a.shape, self.b.shape, self.c.shape)
+
         self.a = self.a.astype(self.dtype)
         self.b = self.b.astype(self.dtype)
         self.c = self.c.astype(self.dtype)
@@ -33,7 +33,7 @@ class ContractionProfiler:
         self.desc_a = cutensor.create_tensor_descriptor(self.a)
         self.desc_b = cutensor.create_tensor_descriptor(self.b)
         self.desc_c = cutensor.create_tensor_descriptor(self.c)
-        print(self.mode_a, self.mode_b, self.mode_c)
+
         self.mode_a = cutensor.create_mode(*self.mode_a)
         self.mode_b = cutensor.create_mode(*self.mode_b)
         self.mode_c = cutensor.create_mode(*self.mode_c)
