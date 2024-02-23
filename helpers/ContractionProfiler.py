@@ -78,13 +78,13 @@ class ContractionProfiler:
 
         def populate_extent(extent, mode, dim):
             print(extent, mode, dim)
-            for i in range(len(mode)):
+            for i in range(len(mode[0])):
                 extent[mode[i]] = dim[i]
         
         n_extent_a = populate_extent(extent_a, mode_a, adim)
         n_extent_b = populate_extent(extent_b, mode_b, bdim)
         n_extent_c = populate_extent(extent_c, mode_c, cdim)
-
+        print(n_extent_a, n_extent_b, n_extent_c)
         return n_extent_a | n_extent_b | n_extent_c
     
     def profile_cutensor(self, algo_number) -> list:
