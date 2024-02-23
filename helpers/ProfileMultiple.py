@@ -1,5 +1,5 @@
-from helpers import ContractionProfiler
-from helpers import Dimensions
+from helpers.ContractionProfiler import *
+from helpers.Dimensions import *
 import pandas as pd
 import ast
 
