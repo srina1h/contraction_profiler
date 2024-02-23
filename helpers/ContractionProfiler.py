@@ -77,8 +77,8 @@ class ContractionProfiler:
         extent_c = {}
 
         def populate_extent(extent, mode, dim):
-            print(extent, mode, dim)
-            for i in range(len(mode[0])):
+            print(extent, mode, dim, len(mode), len(mode[0]))
+            for i in range(len(mode)):
                 extent[mode[i]] = dim[i]
             return extent
         
