@@ -1,5 +1,5 @@
 import argparse
-from helpers import ProfileMultiple
+from helpers.ProfileMultiple import ProfileMultiple
 
 def main():
     parser = argparse.ArgumentParser(description='Python CLI program to profile a file')
