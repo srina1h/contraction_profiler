@@ -1,5 +1,5 @@
 class Dimensions:
-    def __init__(self, adim: tuple, bdim: tuple, cdim: tuple, tdotConDim: tuple[list, list], con_type: str, dataType: str):
+    def __init__(self, adim: tuple, bdim: tuple, cdim: tuple, tdotConDim: tuple, con_type: str, dataType: str):
         self.adim = adim
         self.bdim = bdim
         self.cdim = cdim
