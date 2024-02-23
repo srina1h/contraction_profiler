@@ -67,9 +67,9 @@ class ContractionProfiler:
         B = AB.split("*")[1]
         C = con_type.split("->")[1]
 
-        self.mode_a = A.split()
-        self.mode_b = B.split()
-        self.mode_c = C.split()
+        self.mode_a = A.split()[0]
+        self.mode_b = B.split()[0]
+        self.mode_c = C.split()[0]
     
     def set_extents(self, adim, bdim, cdim, mode_a, mode_b, mode_c) -> dict:
         extent_a = {}
