@@ -93,7 +93,7 @@ class ContractionProfiler:
     def profile_cutensor(self, algo_number) -> list:
         def con():
             with nvtx.annotate(self.dimensions.con_type + self.get_cutensor_algo(algo_number) + self.contractionLabel, color = "purple"):
-                cutensor.contraction(self.alpha, self.a, self.desc_a, self.mode_a, self.b, self.desc_b, self.mode_b, self.beta, self.c, self.desc_c, self.mode_c, algo = algo_number)
+                cutensor.contraction(self.alpha, self.a, self.mode_a, self.b, self.mode_b, self.beta, self.c, self.mode_c, algo = algo_number)
 
         torch.cuda.cudart().cudaProfilerStart()
         perf = cupyx.time.repeat(con,n_warmup=1, n_repeat=5)
