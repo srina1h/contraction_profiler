@@ -25,7 +25,7 @@ class ContractionProfiler:
         self.a = cupy.random.random([self.extent[i] for i in self.mode_a])
         self.b = cupy.random.random([self.extent[i] for i in self.mode_b])
         self.c = cupy.random.random([self.extent[i] for i in self.mode_c])
-
+        print(self.dtype)
         self.a = self.a.astype(self.dtype)
         self.b = self.b.astype(self.dtype)
         self.c = self.c.astype(self.dtype)
@@ -91,7 +91,6 @@ class ContractionProfiler:
         return n_extent_a | n_extent_b | n_extent_c
     
     def profile_cutensor(self, algo_number) -> list:
-        print(self.a, self.b, self.c, self.desc_a, self.mode_a, self.desc_b, self.mode_b, self.desc_c, self.mode_c)
         def con():
             with nvtx.annotate(self.dimensions.con_type + self.get_cutensor_algo(algo_number) + self.contractionLabel, color = "purple"):
                 cutensor.contraction(self.alpha, self.a, self.desc_a, self.mode_a, self.b, self.desc_b, self.mode_b, self.beta, self.c, self.desc_c, self.mode_c, algo = algo_number)
