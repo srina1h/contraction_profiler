@@ -83,6 +83,7 @@ class ContractionProfiler:
         extent_a = populate_extent(extent_a, mode_a, adim)
         extent_b = populate_extent(extent_b, mode_b, bdim)
         extent_c = populate_extent(extent_c, mode_c, cdim)
+        print(extent_a, extent_b, extent_c)
 
         return extent_a | extent_b | extent_c
     
