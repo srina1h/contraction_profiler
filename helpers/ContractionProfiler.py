@@ -4,7 +4,7 @@ from cupyx import cutensor
 import cupyx.time
 import nvtx
 import torch
-import Dimensions
+from helpers import Dimensions
 
 # ALGO_DEFAULT_PATIENT = -6  # NOQA, Uses the more accurate but also more time-consuming performance model
 # ALGO_GETT = -4             # NOQA, Choose the GETT algorithm
