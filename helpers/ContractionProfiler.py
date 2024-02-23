@@ -113,7 +113,7 @@ class ContractionProfiler:
         return [perf.cpu_times.mean(), perf.gpu_times.mean()]
 
     def check_correctness(self, algo_number) -> bool:
-        cu = cutensor.contraction(self.alpha, self.a, self.desc_a, self.mode_a, self.b, self.desc_b, self.mode_b, self.beta, self.c, self.desc_c, self.mode_c, algo = algo_number)
+        cu = cutensor.contraction(self.alpha, self.a, self.mode_a, self.b, self.mode_b, self.beta, self.c, self.mode_c, algo = algo_number)
         to = torch.tensordot(self.atorch, self.btorch, dims = self.dimensions.tdotConDim)
 
         if numpy.array_equal(cupy.asnumpy(cu), to.numpy):
