@@ -19,7 +19,7 @@ class ProfileMultiple:
 
     def profile(self) -> None:
         for index, row in self.data.iterrows():
-            dimensions = Dimensions(ast.literal_eval(row['adim']) , ast.literal_eval(row['bdim']), ast.literal_eval(row['cdim']), ast.literal_eval(row['condim']), ast.literal_eval(row['con_type']), ast.literal_eval(row['dataType']))
+            dimensions = Dimensions(ast.literal_eval(row['adim']), ast.literal_eval(row['bdim']), ast.literal_eval(row['cdim']), ast.literal_eval(row['condim']), ast.literal_eval(row['con_type']), ast.literal_eval(row['dataType']))
             profiler = ContractionProfiler(dimensions, row['label'])
             result = profiler.profile()
             self.results.append(result)
