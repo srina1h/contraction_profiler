@@ -1,4 +1,4 @@
-import ContractionProfiler
+from helpers import ContractionProfiler
 import Dimensions
 import pandas as pd
 
