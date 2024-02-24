@@ -5,16 +5,30 @@ import cupyx.time
 import nvtx
 import torch
 
-dtype = numpy.float32
+dtype = numpy.float16
 
-atorch = torch.rand((100, 200), device = 'cuda')
-btorch = torch.rand((200, 100, 100), device = 'cuda')
+# A torch.Size([4096, 768])
+# B torch.Size([20, 8, 8, 12])
+# B reshape torch.Size([20, 768])
+# final torch.Size([4096, 20])
+
+atorch = torch.rand((4096, 768), device = 'cuda', dtype = torch.float16)
+btorch = torch.rand((20, 768), device = 'cuda', dtype = torch.float16)
 
 mode_a = ('a', 'b')
-mode_b = ('b', 'c', 'd')
-mode_c = ('a', 'c', 'd')
-extent = {'a': 100, 'b': 200, 'c': 100, 'd': 100}
-con_type = "ab * bcd -> acd"
+mode_b = ('c', 'd', 'e', 'f')
+mode_c = ('a', 'c')
+extent = {'a': 4096, 'b': 768, 'c': 20, 'd': 8, 'e': 8, 'f': 12}
+con_type = "ab * cdef -> ac"
+
+# atorch = torch.rand((4096, 768), device = 'cuda')
+# btorch = torch.rand((20, 768), device = 'cuda')
+
+# mode_a = ('a', 'b')
+# mode_b = ('c', 'b')
+# mode_c = ('a', 'c')
+# extent = {'a': 4096, 'b': 768, 'c': 20}
+# con_type = "ab * cb -> ac"
 
 # mode_a = ('a', 'b', 'c')
 # mode_b = ('c', 'd', 'e')
@@ -48,7 +62,7 @@ beta = 0
 # GETT
 
 def con():
-    with nvtx.annotate(con_type, color = "purple"):
+    with nvtx.annotate(con_type + "gett", color = "purple"):
         cutensor.contraction(alpha, a, desc_a, mode_a, b, desc_b, mode_b, beta, c, desc_c, mode_c, algo = -2)
 
 torch.cuda.cudart().cudaProfilerStart()
@@ -60,12 +74,14 @@ elapsed = perf1.gpu_times.mean()
 print("cutensor-GETT")
 print('dtype: {}'.format(numpy.dtype(dtype).name))
 print(perf1)
-print('GFLOPS: {}'.format(total_flops / elapsed / 1e9))
+print('Avg CPU time: {}'.format(perf1.cpu_times.mean()))
+print('Avg Gpu time: {}'.format(perf1.gpu_times.mean()))
+print('Total avg time: {}'.format(perf1.cpu_times.mean() + perf1.gpu_times.mean()))
 
 # ALGO_DEFAULT
 
 def con2():
-    with nvtx.annotate(con_type, color = "purple"):
+    with nvtx.annotate(con_type + "def", color = "purple"):
         cutensor.contraction(alpha, a, desc_a, mode_a, b, desc_b, mode_b, beta, c, desc_c, mode_c, algo = -1)
 
 torch.cuda.cudart().cudaProfilerStart()
@@ -77,12 +93,14 @@ elapsed = perf2.gpu_times.mean()
 print("Cutensor-ALGO_DEFAULT:")
 print('dtype: {}'.format(numpy.dtype(dtype).name))
 print(perf2)
-print('GFLOPS: {}'.format(total_flops / elapsed / 1e9))
+print('Avg CPU time: {}'.format(perf2.cpu_times.mean()))
+print('Avg Gpu time: {}'.format(perf2.gpu_times.mean()))
+print('Total avg time: {}'.format(perf2.cpu_times.mean() + perf2.gpu_times.mean()))
 
 # ALGO_TTGT
 
 def con3():
-    with nvtx.annotate(con_type, color = "purple"):
+    with nvtx.annotate(con_type + "ttgt", color = "purple"):
         cutensor.contraction(alpha, a, desc_a, mode_a, b, desc_b, mode_b, beta, c, desc_c, mode_c, algo = -2)
 
 torch.cuda.cudart().cudaProfilerStart()
@@ -94,13 +112,15 @@ elapsed = perf3.gpu_times.mean()
 print("CuTensor-ALGO_TTGT:")
 print('dtype: {}'.format(numpy.dtype(dtype).name))
 print(perf3)
-print('GFLOPS: {}'.format(total_flops / elapsed / 1e9))
+print('Avg CPU time: {}'.format(perf3.cpu_times.mean()))
+print('Avg Gpu time: {}'.format(perf3.gpu_times.mean()))
+print('Total avg time: {}'.format(perf3.cpu_times.mean() + perf3.gpu_times.mean()))
 
 # Tensordot
 
 def con4():
-    with nvtx.annotate(con_type, color = "purple"):
-        torch.tensordot(atorch,btorch,[[-1],[0]])
+    with nvtx.annotate(con_type + "tdot", color = "purple"):
+        torch.tensordot(atorch, btorch, dims = ([1],[1]))
 
 torch.cuda.cudart().cudaProfilerStart()
 perf4 = cupyx.time.repeat(con4,n_warmup=1, n_repeat=5)
@@ -112,4 +132,25 @@ elapsed = perf4.gpu_times.mean()
 print("Tensordot:")
 print('dtype: {}'.format(numpy.dtype(dtype).name))
 print(perf4)
-print('GFLOPS: {}'.format(total_flops / elapsed / 1e9))
+print('Avg CPU time: {}'.format(perf4.cpu_times.mean()))
+print('Avg Gpu time: {}'.format(perf4.gpu_times.mean()))
+print('Total avg time: {}'.format(perf4.cpu_times.mean() + perf4.gpu_times.mean()))
+
+# Correctness check
+
+cu = cutensor.contraction(alpha, a, desc_a, mode_a, b, desc_b, mode_b, beta, c, desc_c, mode_c, algo = -2)
+
+to = torch.tensordot(atorch, btorch, dims = ([1],[1]))
+
+if cu.shape == to.shape:
+    print("Shapes are equal")
+else:
+    print("Shapes are not equal")
+
+if numpy.array_equal(cupy.asnumpy(cu), to.numpy):
+    print("Results are equal")
+else:
+    print("Results are not equal")
+    print(cupy.asnumpy(cu))
+    print("-----------------")
+    print(to.cpu().numpy())
