@@ -22,14 +22,14 @@ class ContractionProfiler:
         self.set_modes(self.dimensions.con_type)
         self.extent = self.set_extents(self.dimensions.adim, self.dimensions.bdim, self.dimensions.cdim, self.mode_a, self.mode_b, self.mode_c)
 
-        # self.atorch = torch.rand(self.dimensions.adim, device = 'cuda', dtype = self.torchdType)
-        # self.btorch = torch.rand(self.dimensions.bdim, device = 'cuda', dtype = self.torchdType)
+        self.atorch = torch.rand(self.dimensions.adim, device = 'cuda', dtype = self.torchdType)
+        self.btorch = torch.rand(self.dimensions.bdim, device = 'cuda', dtype = self.torchdType)
 
         self.a = cupy.random.random([self.extent[i] for i in self.mode_a])
         self.b = cupy.random.random([self.extent[i] for i in self.mode_b])
         self.c = cupy.random.random([self.extent[i] for i in self.mode_c])
-        self.atorch = torch.from_numpy(cupy.asnumpy(self.a)).to('cuda')
-        self.btorch = torch.from_numpy(cupy.asnumpy(self.b)).to('cuda')
+        # self.atorch = torch.from_numpy(cupy.asnumpy(self.a)).to('cuda')
+        # self.btorch = torch.from_numpy(cupy.asnumpy(self.b)).to('cuda')
 
         print(self.dtype)
         self.a = self.a.astype(self.dtype)
