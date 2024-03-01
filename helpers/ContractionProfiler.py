@@ -132,6 +132,7 @@ class ContractionProfiler:
         tensordot = self.profile_tensordot()
         print(self.atorch.shape, self.btorch.shape)
         print(self.a.shape, self.b.shape)
+        print(self.mode_a, self.mode_b, self.mode_c)
 
         correctness = self.check_correctness(-4)
 
