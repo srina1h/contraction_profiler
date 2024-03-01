@@ -175,6 +175,13 @@ else:
     print("-----------------")
     print(to.cpu().numpy())
 
+if numpy.array_equal(cupy.asnumpy(cup), cupy.asnumpy(cu)):
+    print("Results are equal cupy einsum cutensor")
+else:
+    print("Results are not equal cupy einsum cutensor")
+    print(cupy.asnumpy(cu))
+    print("-----------------")
+
 if numpy.array_equal(cupy.asnumpy(cu), to.numpy):
     print("Results are equal")
 else:
