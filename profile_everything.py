@@ -168,6 +168,9 @@ if cu.shape == to.shape:
     print("Shapes are equal")
 else:
     print("Shapes are not equal")
+    print(cu.shape)
+    print(to.shape)
+    print(cup.shape)
 
 if numpy.array_equal(cupy.asnumpy(cup), to.numpy):
     print("Results are equal einsum tdot")
