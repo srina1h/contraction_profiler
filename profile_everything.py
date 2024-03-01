@@ -168,19 +168,20 @@ else:
     print("Shapes are not equal")
 
 if numpy.array_equal(cupy.asnumpy(cup), to.numpy):
-    print("Results are equal cupy einsum")
+    print("Results are equal einsum tdot")
 else:
-    print("Results are not equal cupy einsum")
-    print(cupy.asnumpy(cu))
+    print("Results are not equal einsum tdot")
+    print(cupy.asnumpy(cup))
     print("-----------------")
     print(to.cpu().numpy())
 
 if numpy.array_equal(cupy.asnumpy(cup), cupy.asnumpy(cu)):
-    print("Results are equal cupy einsum cutensor")
+    print("Results are equal einsum cutensor")
 else:
-    print("Results are not equal cupy einsum cutensor")
-    print(cupy.asnumpy(cu))
+    print("Results are not equal einsum cutensor")
+    print(cupy.asnumpy(cup))
     print("-----------------")
+    print(cupy.asnumpy(cu))
 
 if numpy.array_equal(cupy.asnumpy(cu), to.numpy):
     print("Results are equal")
