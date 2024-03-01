@@ -196,8 +196,8 @@ else:
     # print("-----------------")
     # print(to.cpu().numpy())
 
-print(cupy.asnumpy(cup)[0])
+print(cupy.asnumpy(cup)[3])
 print("-----------------")
-print(cupy.asnumpy(cu)[0])
+print(cupy.asnumpy(cu)[3])
 print("-----------------")
-print(to.cpu().numpy()[0])
+print(to.cpu().numpy()[3])
