@@ -29,8 +29,8 @@ mode_b = ('b', 'c')
 mode_c = ('a', 'c')
 extent = {'a': 2, 'b': 2, 'c': 2}
 con_type = "ab * cb -> ac"
-atorch = torch.rand((2,2), device = 'cuda')
-btorch = torch.rand((2,2), device = 'cuda')
+# atorch = torch.rand((2,2), device = 'cuda')
+# btorch = torch.rand((2,2), device = 'cuda')
 
 # mode_a = ('a', 'b', 'c')
 # mode_b = ('c', 'd', 'e')
@@ -52,6 +52,9 @@ c = cupy.random.random([extent[i] for i in mode_c])
 a = a.astype(dtype)
 b = b.astype(dtype)
 c = c.astype(dtype)
+
+atorch = torch.from_numpy(cupy.asnumpy(a)).to('cuda')
+btorch = torch.from_numpy(cupy.asnumpy(b)).to('cuda')
 
 desc_a = cutensor.create_tensor_descriptor(a)
 desc_b = cutensor.create_tensor_descriptor(b)
