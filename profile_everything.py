@@ -122,7 +122,7 @@ print('Total avg time: {}'.format(perf3.cpu_times.mean() + perf3.gpu_times.mean(
 
 def con4():
     with nvtx.annotate(con_type + "tdot", color = "purple"):
-        torch.tensordot(atorch, btorch, dims = ([1],[1]))
+        torch.tensordot(atorch, btorch, dims = ([-1],[0]))
 
 torch.cuda.cudart().cudaProfilerStart()
 perf4 = cupyx.time.repeat(con4,n_warmup=1, n_repeat=5)
@@ -140,7 +140,7 @@ print('Total avg time: {}'.format(perf4.cpu_times.mean() + perf4.gpu_times.mean(
 
 def con5():
     with nvtx.annotate(con_type + "esum", color = "purple"):
-        cupy.einsum('ab, cb->ac', a, b)
+        cupy.einsum('abc, cde->abde', a, b)
 
 torch.cuda.cudart().cudaProfilerStart()
 perf5 = cupyx.time.repeat(con5,n_warmup=1, n_repeat=5)
