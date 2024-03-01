@@ -15,20 +15,20 @@ dtype = numpy.float16
 atorch = torch.rand((4096, 768), device = 'cuda', dtype = torch.float16)
 btorch = torch.rand((20, 768), device = 'cuda', dtype = torch.float16)
 
-mode_a = ('a', 'b')
-mode_b = ('c', 'd', 'e', 'f')
-mode_c = ('a', 'c')
-extent = {'a': 4096, 'b': 768, 'c': 20, 'd': 8, 'e': 8, 'f': 12}
-con_type = "ab * cdef -> ac"
+# mode_a = ('a', 'b')
+# mode_b = ('c', 'd', 'e', 'f')
+# mode_c = ('a', 'c')
+# extent = {'a': 4096, 'b': 768, 'c': 20, 'd': 8, 'e': 8, 'f': 12}
+# con_type = "ab * cdef -> ac"
 
 # atorch = torch.rand((4096, 768), device = 'cuda')
 # btorch = torch.rand((20, 768), device = 'cuda')
 
-# mode_a = ('a', 'b')
-# mode_b = ('c', 'b')
-# mode_c = ('a', 'c')
-# extent = {'a': 4096, 'b': 768, 'c': 20}
-# con_type = "ab * cb -> ac"
+mode_a = ('a', 'b')
+mode_b = ('c', 'b')
+mode_c = ('a', 'c')
+extent = {'a': 4096, 'b': 768, 'c': 20}
+con_type = "ab * cb -> ac"
 
 # mode_a = ('a', 'b', 'c')
 # mode_b = ('c', 'd', 'e')
@@ -136,16 +136,44 @@ print('Avg CPU time: {}'.format(perf4.cpu_times.mean()))
 print('Avg Gpu time: {}'.format(perf4.gpu_times.mean()))
 print('Total avg time: {}'.format(perf4.cpu_times.mean() + perf4.gpu_times.mean()))
 
+def con5():
+    with nvtx.annotate(con_type + "esum", color = "purple"):
+        cupy.einsum('ab, cb->ac', a, b)
+
+torch.cuda.cudart().cudaProfilerStart()
+perf5 = cupyx.time.repeat(con5,n_warmup=1, n_repeat=5)
+torch.cuda.cudart().cudaProfilerStop()
+
+total_flops = 2 * numpy.prod(numpy.array(list(extent.values())))
+elapsed = perf5.gpu_times.mean()
+
+print("Einsum:")
+print('dtype: {}'.format(numpy.dtype(dtype).name))
+print(perf5)
+print('Avg CPU time: {}'.format(perf4.cpu_times.mean()))
+print('Avg Gpu time: {}'.format(perf4.gpu_times.mean()))
+print('Total avg time: {}'.format(perf4.cpu_times.mean() + perf4.gpu_times.mean()))
+
 # Correctness check
 
 cu = cutensor.contraction(alpha, a, desc_a, mode_a, b, desc_b, mode_b, beta, c, desc_c, mode_c, algo = -2)
 
 to = torch.tensordot(atorch, btorch, dims = ([1],[1]))
 
+cup = cupy.einsum('ab, cb->ac', a, b)
+
 if cu.shape == to.shape:
     print("Shapes are equal")
 else:
     print("Shapes are not equal")
+
+if numpy.array_equal(cupy.asnumpy(cup), to.numpy):
+    print("Results are equal cupy einsum")
+else:
+    print("Results are not equal cupy einsum")
+    print(cupy.asnumpy(cu))
+    print("-----------------")
+    print(to.cpu().numpy())
 
 if numpy.array_equal(cupy.asnumpy(cu), to.numpy):
     print("Results are equal")
