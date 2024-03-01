@@ -195,3 +195,9 @@ else:
     # print(cupy.asnumpy(cu))
     # print("-----------------")
     # print(to.cpu().numpy())
+
+print(cupy.asnumpy(cup))
+print("-----------------")
+print(cupy.asnumpy(cu))
+print("-----------------")
+print(to.cpu().numpy())
