@@ -147,7 +147,7 @@ class ContractionProfiler:
         cutensor_tgett = self.profile_cutensor(-3)
         cutensor_gett = self.profile_cutensor(-4)
         cutensor_default_patient = self.profile_cutensor(-6)
-        cuquantum = self.profile_cuquantum()
+        # cuquantum = self.profile_cuquantum()
         cuquantum = [float('inf'),float('inf')]
         tensordot = self.profile_tensordot()
 
