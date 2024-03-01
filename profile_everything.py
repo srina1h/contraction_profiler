@@ -162,7 +162,7 @@ cu = cutensor.contraction(alpha, a, desc_a, mode_a, b, desc_b, mode_b, beta, c, 
 
 to = torch.tensordot(atorch, btorch, dims = ([1],[1]))
 
-cup = cupy.einsum('ab, cb->ac', a, b)
+cup = cupy.einsum('abc, cde->abde', a, b)
 
 if cu.shape == to.shape:
     print("Shapes are equal")
