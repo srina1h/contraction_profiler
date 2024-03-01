@@ -199,6 +199,8 @@ else:
     # print(to.cpu().numpy())
 print(atorch)
 print(btorch)
+print(a)
+print(b)
 print("-----------------")
 print(cupy.asnumpy(cup))
 print("-----------------")
