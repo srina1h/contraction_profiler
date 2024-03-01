@@ -160,7 +160,7 @@ print('Total avg time: {}'.format(perf5.cpu_times.mean() + perf5.gpu_times.mean(
 
 cu = cutensor.contraction(alpha, a, desc_a, mode_a, b, desc_b, mode_b, beta, c, desc_c, mode_c, algo = -2)
 
-to = torch.tensordot(atorch, btorch, dims = ([1],[1]))
+to = torch.tensordot(atorch, btorch, dims = ([-1],[0]))
 
 cup = cupy.einsum('abc, cde->abde', a, b)
 
