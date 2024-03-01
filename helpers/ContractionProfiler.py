@@ -4,7 +4,7 @@ from cupyx import cutensor
 import cupyx.time
 import nvtx
 import torch
-from cuquantum import contract
+# from cuquantum import contract
 from helpers.Dimensions import *
 
 algorithms = ["ALGO_DEFAULT","ALGO_TTGT", "ALGO_TGETT", "ALGO_GETT", "ALGO_DEFAULT_PATIENT" , "tensordot"]
