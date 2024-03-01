@@ -150,9 +150,9 @@ elapsed = perf5.gpu_times.mean()
 print("Einsum:")
 print('dtype: {}'.format(numpy.dtype(dtype).name))
 print(perf5)
-print('Avg CPU time: {}'.format(perf4.cpu_times.mean()))
-print('Avg Gpu time: {}'.format(perf4.gpu_times.mean()))
-print('Total avg time: {}'.format(perf4.cpu_times.mean() + perf4.gpu_times.mean()))
+print('Avg CPU time: {}'.format(perf5.cpu_times.mean()))
+print('Avg Gpu time: {}'.format(perf5.gpu_times.mean()))
+print('Total avg time: {}'.format(perf5.cpu_times.mean() + perf5.gpu_times.mean()))
 
 # Correctness check
 
