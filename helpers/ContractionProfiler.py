@@ -4,6 +4,7 @@ from cupyx import cutensor
 import cupyx.time
 import nvtx
 import torch
+import cuquantum as cq
 from helpers.Dimensions import *
 
 algorithms = ["ALGO_DEFAULT","ALGO_TTGT", "ALGO_TGETT", "ALGO_GETT", "ALGO_DEFAULT_PATIENT" , "tensordot"]
@@ -68,6 +69,7 @@ class ContractionProfiler:
         AB = con_type.split("->")[0]
         A = AB.split("*")[0]
         B = AB.split("*")[1]
+        self.cqinp  = A + ',' + B
         C = con_type.split("->")[1]
 
         self.mode_a = tuple([i for i in A.split()[0]])
@@ -102,6 +104,17 @@ class ContractionProfiler:
         torch.cuda.cudart().cudaProfilerStop()
 
         return [perf.cpu_times.mean(), perf.gpu_times.mean()]
+
+    def profile_cuquantum(self) -> list:
+        def con():
+            with nvtx.annotate(self.dimensions.con_type + "cuq" + self.contractionLabel, color = "purple"):
+                cq.contraction(self.cqinp, self.atorch, self.btorch)
+
+        torch.cuda.cudart().cudaProfilerStart()
+        perf = cupyx.time.repeat(con,n_warmup=1, n_repeat=5)
+        torch.cuda.cudart().cudaProfilerStop()
+
+        return [perf.cpu_times.mean(), perf.gpu_times.mean()]
     
     def profile_tensordot(self) -> list:
         def con():
@@ -117,8 +130,9 @@ class ContractionProfiler:
     def check_correctness(self, algo_number) -> bool:
         cu = cutensor.contraction(self.alpha, self.a, self.mode_a, self.b, self.mode_b, self.beta, self.c, self.mode_c, algo = algo_number)
         to = torch.tensordot(self.atorch, self.btorch, dims = self.dimensions.tdotConDim)
+        cuq = cq.contraction(self.cqinp, self.atorch, self.btorch)
 
-        if numpy.array_equal(cupy.asnumpy(cu), to.numpy):
+        if numpy.array_equal(cupy.asnumpy(cu), to.numpy) and numpy.array_equal(to.numpy, cuq.numpy) and numpy.array_equal(cuq.numpy, to.numpy):
             return True
         else:
             return False
@@ -129,14 +143,15 @@ class ContractionProfiler:
         cutensor_tgett = self.profile_cutensor(-3)
         cutensor_gett = self.profile_cutensor(-4)
         cutensor_default_patient = self.profile_cutensor(-6)
+        cuquantum = self.profile_cuquantum()
         tensordot = self.profile_tensordot()
 
         correctness = self.check_correctness(-4)
 
-        lowest_CPU = self.fastest_time([cutensor_default[0], cutensor_ttgt[0], cutensor_tgett[0], cutensor_gett[0], cutensor_default_patient[0], tensordot[0]])
-        lowest_GPU = self.fastest_time([cutensor_default[1], cutensor_ttgt[1], cutensor_tgett[1], cutensor_gett[1], cutensor_default_patient[1], tensordot[1]])
+        lowest_CPU = self.fastest_time([cutensor_default[0], cutensor_ttgt[0], cutensor_tgett[0], cutensor_gett[0], cutensor_default_patient[0], cuquantum[0], tensordot[0]])
+        lowest_GPU = self.fastest_time([cutensor_default[1], cutensor_ttgt[1], cutensor_tgett[1], cutensor_gett[1], cutensor_default_patient[1], cuquantum[0], tensordot[1]])
 
-        return [self.contractionLabel, cutensor_default, cutensor_ttgt, cutensor_tgett, cutensor_gett, cutensor_default_patient, tensordot, correctness, lowest_CPU, lowest_GPU]
+        return [self.contractionLabel, cutensor_default, cutensor_ttgt, cutensor_tgett, cutensor_gett, cutensor_default_patient, cuquantum, tensordot, correctness, lowest_CPU, lowest_GPU]
 
     def fastest_time(self, inp) -> int:
         return algorithms[inp.index(min(inp))]
