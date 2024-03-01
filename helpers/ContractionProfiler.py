@@ -108,7 +108,7 @@ class ContractionProfiler:
     def profile_cuquantum(self) -> list:
         def con():
             with nvtx.annotate(self.dimensions.con_type + "cuq" + self.contractionLabel, color = "purple"):
-                cq.contraction(self.cqinp, self.atorch, self.btorch)
+                cq.contract(self.cqinp, self.atorch, self.btorch)
 
         torch.cuda.cudart().cudaProfilerStart()
         perf = cupyx.time.repeat(con,n_warmup=1, n_repeat=5)
@@ -130,7 +130,7 @@ class ContractionProfiler:
     def check_correctness(self, algo_number) -> bool:
         cu = cutensor.contraction(self.alpha, self.a, self.mode_a, self.b, self.mode_b, self.beta, self.c, self.mode_c, algo = algo_number)
         to = torch.tensordot(self.atorch, self.btorch, dims = self.dimensions.tdotConDim)
-        cuq = cq.contraction(self.cqinp, self.atorch, self.btorch)
+        cuq = cq.contract(self.cqinp, self.atorch, self.btorch)
 
         if numpy.array_equal(cupy.asnumpy(cu), to.numpy) and numpy.array_equal(to.numpy, cuq.numpy) and numpy.array_equal(cuq.numpy, to.numpy):
             return True
