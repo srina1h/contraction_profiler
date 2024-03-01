@@ -24,19 +24,21 @@ dtype = numpy.float16
 # atorch = torch.rand((4096, 768), device = 'cuda')
 # btorch = torch.rand((20, 768), device = 'cuda')
 
-# mode_a = ('a', 'b')
-# mode_b = ('c', 'b')
-# mode_c = ('a', 'c')
-# extent = {'a': 4096, 'b': 768, 'c': 20}
-# con_type = "ab * cb -> ac"
+mode_a = ('a', 'b')
+mode_b = ('b', 'c')
+mode_c = ('a', 'c')
+extent = {'a': 2, 'b': 2, 'c': 2}
+con_type = "ab * cb -> ac"
+atorch = torch.rand((2,2), device = 'cuda')
+btorch = torch.rand((2,2), device = 'cuda')
 
-mode_a = ('a', 'b', 'c')
-mode_b = ('c', 'd', 'e')
-mode_c = ('a', 'b', 'd', 'e')
-extent = {'a': 12, 'b': 8, 'c': 20, 'd': 8, 'e': 20}
-con_type = "abc * cde -> abde"
-atorch = torch.rand((12, 8, 20), device = 'cuda', dtype = torch.float16)
-btorch = torch.rand((20, 8, 20), device = 'cuda', dtype = torch.float16)
+# mode_a = ('a', 'b', 'c')
+# mode_b = ('c', 'd', 'e')
+# mode_c = ('a', 'b', 'd', 'e')
+# extent = {'a': 12, 'b': 8, 'c': 20, 'd': 8, 'e': 20}
+# con_type = "abc * cde -> abde"
+# atorch = torch.rand((12, 8, 20), device = 'cuda', dtype = torch.float16)
+# btorch = torch.rand((20, 8, 20), device = 'cuda', dtype = torch.float16)
 
 # mode_a = ('a', 'b')
 # mode_b = ('b', 'c', 'd', 'e')
@@ -162,7 +164,7 @@ cu = cutensor.contraction(alpha, a, desc_a, mode_a, b, desc_b, mode_b, beta, c, 
 
 to = torch.tensordot(atorch, btorch, dims = ([-1],[0]))
 
-cup = cupy.einsum('abc, cde->abde', a, b)
+cup = cupy.einsum('ab, bc->ac', a, b)
 
 if cu.shape == to.shape:
     print("Shapes are equal")
@@ -195,9 +197,11 @@ else:
     # print(cupy.asnumpy(cu))
     # print("-----------------")
     # print(to.cpu().numpy())
-
-print(cupy.asnumpy(cup)[3])
+print(atorch)
+print(btorch)
 print("-----------------")
-print(cupy.asnumpy(cu)[3])
+print(cupy.asnumpy(cup))
 print("-----------------")
-print(to.cpu().numpy()[3])
+print(cupy.asnumpy(cu))
+print("-----------------")
+print(to.cpu().numpy())
