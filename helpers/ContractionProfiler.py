@@ -117,8 +117,6 @@ class ContractionProfiler:
     def check_correctness(self, algo_number) -> bool:
         cu = cutensor.contraction(self.alpha, self.a, self.mode_a, self.b, self.mode_b, self.beta, self.c, self.mode_c, algo = algo_number)
         to = torch.tensordot(self.atorch, self.btorch, dims = self.dimensions.tdotConDim)
-        print(cupy.asnumpy(cu))
-        print(to.numpy)
 
         if numpy.array_equal(cupy.asnumpy(cu), to.numpy):
             return True
@@ -132,6 +130,8 @@ class ContractionProfiler:
         cutensor_gett = self.profile_cutensor(-4)
         cutensor_default_patient = self.profile_cutensor(-6)
         tensordot = self.profile_tensordot()
+        print(self.atorch.shape, self.btorch.shape)
+        print(self.a.shape, self.b.shape)
 
         correctness = self.check_correctness(-4)
 
