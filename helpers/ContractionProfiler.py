@@ -183,67 +183,6 @@ class ContractionProfiler:
         del self.dimensions
         del self.contractionLabel
         del self.extent
-        del self.a
-        del self.b
-        del self.c
-        del self.atorch
-        del self.btorch
-        del self.mode_a
-        del self.mode_b
-        del self.mode_c
-        del self.alpha
-        del self.beta
-        del self.dtype
-        del self.torchdType
-        del self.cqinp
-        del self.dimensions
-        del self.contractionLabel
-        del self.extent
-        del self.a
-        del self.b
-        del self.c
-        del self.atorch
-        del self.btorch
-        del self.mode_a
-        del self.mode_b
-        del self.mode_c
-        del self.alpha
-        del self.beta
-        del self.dtype
-        del self.torchdType
-        del self.cqinp
-        del self.dimensions
-        del self.contractionLabel
-        del self.extent
-        del self.a
-        del self.b
-        del self.c
-        del self.atorch
-        del self.btorch
-        del self.mode_a
-        del self.mode_b
-        del self.mode_c
-        del self.alpha
-        del self.beta
-        del self.dtype
-        del self.torchdType
-        del self.cqinp
-        del self.dimensions
-        del self.contractionLabel
-        del self.extent
-        del self.a
-        del self.b
-        del self.c
-        del self.atorch
-        del self.btorch
-        del self.mode_a
-        del self.mode_b
-        del self.mode_c
-        del self.alpha
-        del self.beta
-        del self.dtype
-        del self.torchdType
-        del self.cqinp
 
         cupy.get_default_memory_pool().free_all_blocks()
         cupy.get_default_pinned_memory_pool().free_all_blocks()
