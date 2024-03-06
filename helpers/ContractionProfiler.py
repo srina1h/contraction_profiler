@@ -164,9 +164,6 @@ class ContractionProfiler:
         return algorithms[inp.index(min(inp))]
     
     def cleanup(self) -> None:
-        cutensor.destroy_tensor_descriptor(self.desc_a)
-        cutensor.destroy_tensor_descriptor(self.desc_b)
-        cutensor.destroy_tensor_descriptor(self.desc_c)
         del self.a
         del self.b
         del self.c
