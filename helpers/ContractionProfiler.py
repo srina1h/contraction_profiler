@@ -28,8 +28,8 @@ class ContractionProfiler:
         self.a = cupy.random.random([self.extent[i] for i in self.mode_a])
         self.b = cupy.random.random([self.extent[i] for i in self.mode_b])
         self.c = cupy.random.random([self.extent[i] for i in self.mode_c])
-        # self.atorch = torch.from_numpy(cupy.asnumpy(self.a)).to('cuda')
-        # self.btorch = torch.from_numpy(cupy.asnumpy(self.b)).to('cuda')
+        self.atorch = torch.from_numpy(cupy.asnumpy(self.a)).to('cuda')
+        self.btorch = torch.from_numpy(cupy.asnumpy(self.b)).to('cuda')
 
         print(self.dtype)
         self.a = self.a.astype(self.dtype)
@@ -47,6 +47,8 @@ class ContractionProfiler:
         self.beta = 0
 
         self.contractionLabel = contractionLabel
+
+        self.cleanup()
 
     def setDtype(self, dataType) -> None:
         if dataType == "float32":
@@ -160,3 +162,92 @@ class ContractionProfiler:
 
     def fastest_time(self, inp) -> int:
         return algorithms[inp.index(min(inp))]
+    
+    def cleanup(self) -> None:
+        cutensor.destroy_tensor_descriptor(self.desc_a)
+        cutensor.destroy_tensor_descriptor(self.desc_b)
+        cutensor.destroy_tensor_descriptor(self.desc_c)
+        del self.a
+        del self.b
+        del self.c
+        del self.atorch
+        del self.btorch
+        del self.desc_a
+        del self.desc_b
+        del self.desc_c
+        del self.mode_a
+        del self.mode_b
+        del self.mode_c
+        del self.alpha
+        del self.beta
+        del self.dtype
+        del self.torchdType
+        del self.cqinp
+        del self.dimensions
+        del self.contractionLabel
+        del self.extent
+        del self.a
+        del self.b
+        del self.c
+        del self.atorch
+        del self.btorch
+        del self.mode_a
+        del self.mode_b
+        del self.mode_c
+        del self.alpha
+        del self.beta
+        del self.dtype
+        del self.torchdType
+        del self.cqinp
+        del self.dimensions
+        del self.contractionLabel
+        del self.extent
+        del self.a
+        del self.b
+        del self.c
+        del self.atorch
+        del self.btorch
+        del self.mode_a
+        del self.mode_b
+        del self.mode_c
+        del self.alpha
+        del self.beta
+        del self.dtype
+        del self.torchdType
+        del self.cqinp
+        del self.dimensions
+        del self.contractionLabel
+        del self.extent
+        del self.a
+        del self.b
+        del self.c
+        del self.atorch
+        del self.btorch
+        del self.mode_a
+        del self.mode_b
+        del self.mode_c
+        del self.alpha
+        del self.beta
+        del self.dtype
+        del self.torchdType
+        del self.cqinp
+        del self.dimensions
+        del self.contractionLabel
+        del self.extent
+        del self.a
+        del self.b
+        del self.c
+        del self.atorch
+        del self.btorch
+        del self.mode_a
+        del self.mode_b
+        del self.mode_c
+        del self.alpha
+        del self.beta
+        del self.dtype
+        del self.torchdType
+        del self.cqinp
+
+        cupy.get_default_memory_pool().free_all_blocks()
+        cupy.get_default_pinned_memory_pool().free_all_blocks()
+        torch.cuda.empty_cache()
