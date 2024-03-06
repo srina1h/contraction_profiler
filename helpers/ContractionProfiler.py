@@ -48,8 +48,6 @@ class ContractionProfiler:
 
         self.contractionLabel = contractionLabel
 
-        self.cleanup()
-
     def setDtype(self, dataType) -> None:
         if dataType == "float32":
             self.dtype = numpy.float32
@@ -157,6 +155,8 @@ class ContractionProfiler:
 
         lowest_CPU = self.fastest_time([cutensor_default[0], cutensor_ttgt[0], cutensor_tgett[0], cutensor_gett[0], cutensor_default_patient[0], cuquantum[0], tensordot[0]])
         lowest_GPU = self.fastest_time([cutensor_default[1], cutensor_ttgt[1], cutensor_tgett[1], cutensor_gett[1], cutensor_default_patient[1], cuquantum[0], tensordot[1]])
+
+        self.cleanup()
 
         return [self.contractionLabel, cutensor_default, cutensor_ttgt, cutensor_tgett, cutensor_gett, cutensor_default_patient, cuquantum, tensordot, correctness, lowest_CPU, lowest_GPU]
 
