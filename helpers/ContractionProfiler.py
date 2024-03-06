@@ -28,8 +28,8 @@ class ContractionProfiler:
         self.a = cupy.random.random([self.extent[i] for i in self.mode_a])
         self.b = cupy.random.random([self.extent[i] for i in self.mode_b])
         self.c = cupy.random.random([self.extent[i] for i in self.mode_c])
-        self.atorch = torch.from_numpy(cupy.asnumpy(self.a)).to('cuda')
-        self.btorch = torch.from_numpy(cupy.asnumpy(self.b)).to('cuda')
+        self.atorch = torch.as_tensor(self.a, device = 'cuda')
+        self.btorch = torch.as_tensor(self.b, device = 'cuda')
 
         print(self.dtype)
         self.a = self.a.astype(self.dtype)
