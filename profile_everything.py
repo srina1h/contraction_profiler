@@ -55,8 +55,8 @@ a = a.astype(dtype)
 b = b.astype(dtype)
 c = c.astype(dtype)
 
-atorch = torch.from_numpy(cupy.asnumpy(a)).to('cuda')
-btorch = torch.from_numpy(cupy.asnumpy(b)).to('cuda')
+# atorch = torch.from_numpy(cupy.asnumpy(a)).to('cuda')
+# btorch = torch.from_numpy(cupy.asnumpy(b)).to('cuda')
 
 desc_a = cutensor.create_tensor_descriptor(a)
 desc_b = cutensor.create_tensor_descriptor(b)
