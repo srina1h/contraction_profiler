@@ -23,6 +23,8 @@ class ProfileMultiple:
             profiler = ContractionProfiler(dimensions, row['label'])
             result = profiler.profile_all()
             self.results.append(result)
+            del profiler
+            del result
         
     def export(self) -> None:
         print(len(self.results))
