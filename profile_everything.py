@@ -15,14 +15,14 @@ dtype = numpy.float16
 # atorch = torch.rand((4096, 768), device = 'cuda', dtype = torch.float16)
 # btorch = torch.rand((20, 768), device = 'cuda', dtype = torch.float16)
 
-# mode_a = ('a', 'b')
-# mode_b = ('c', 'd', 'e', 'f')
-# mode_c = ('a', 'c')
-# extent = {'a': 4096, 'b': 768, 'c': 20, 'd': 8, 'e': 8, 'f': 12}
-# con_type = "ab * cdef -> ac"
+mode_a = ('a', 'b')
+mode_b = ('c', 'd', 'e', 'f')
+mode_c = ('a', 'c')
+extent = {'a': 4096, 'b': 768, 'c': 20, 'd': 8, 'e': 8, 'f': 12}
+con_type = "ab * cdef -> ac"
 
-# atorch = torch.rand((4096, 768), device = 'cuda')
-# btorch = torch.rand((20, 768), device = 'cuda')
+atorch = torch.rand((4096, 768), device = 'cuda')
+btorch = torch.rand((20, 768), device = 'cuda')
 
 mode_a = ('a', 'b')
 mode_b = ('b', 'c')
