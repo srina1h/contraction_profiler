@@ -4,6 +4,7 @@ from cupyx import cutensor
 import cupyx.time
 import nvtx
 import torch
+import platform
 # from cuquantum import contract
 from helpers.Dimensions import *
 
@@ -99,7 +100,10 @@ class ContractionProfiler:
         n_extent_c = populate_extent(extent_c, mode_c, cdim)
         # print(n_extent_a, n_extent_b, n_extent_c)
         # print(n_extent_a | n_extent_b | n_extent_c)
-        return n_extent_a | n_extent_b | n_extent_c
+        if platform.version() < '3.9':
+            return dict(n_extent_a, **n_extent_b, **n_extent_c)
+        else:
+            return n_extent_a | n_extent_b | n_extent_c
     
     def profile_cutensor(self, algo_number) -> list:
         def con():
