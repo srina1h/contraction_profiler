@@ -5,7 +5,7 @@ import cupyx.time
 import nvtx
 import torch
 
-dtype = numpy.float16
+dtype = numpy.float32
 
 # A torch.Size([4096, 768])
 # B torch.Size([20, 8, 8, 12])
