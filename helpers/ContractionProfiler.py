@@ -22,20 +22,21 @@ class ContractionProfiler:
         self.set_modes(self.dimensions.con_type)
         self.extent = self.set_extents(self.dimensions.adim, self.dimensions.bdim, self.dimensions.cdim, self.mode_a, self.mode_b, self.mode_c)
 
-        self.atorch = torch.rand(self.dimensions.adim, device = 'cuda', dtype = self.torchdType)
-        self.btorch = torch.rand(self.dimensions.bdim, device = 'cuda', dtype = self.torchdType)
+        # self.atorch = torch.rand(self.dimensions.adim, device = 'cuda', dtype = self.torchdType)
+        # self.btorch = torch.rand(self.dimensions.bdim, device = 'cuda', dtype = self.torchdType)
         print(dimensions.con_type)
 
         self.a = cupy.random.random([self.extent[i] for i in self.mode_a])
         self.b = cupy.random.random([self.extent[i] for i in self.mode_b])
         self.c = cupy.random.random([self.extent[i] for i in self.mode_c])
-        self.atorch = torch.as_tensor(self.a, device = 'cuda')
-        self.btorch = torch.as_tensor(self.b, device = 'cuda')
 
         # print(self.dtype)
         self.a = self.a.astype(self.dtype)
         self.b = self.b.astype(self.dtype)
         self.c = self.c.astype(self.dtype)
+
+        self.atorch = torch.as_tensor(self.a, device = 'cuda')
+        self.btorch = torch.as_tensor(self.b, device = 'cuda')
 
         self.desc_a = cutensor.create_tensor_descriptor(self.a)
         self.desc_b = cutensor.create_tensor_descriptor(self.b)
