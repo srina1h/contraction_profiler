@@ -123,6 +123,7 @@ class ContractionProfiler:
     def profile_tensordot(self) -> list:
         def con():
             with nvtx.annotate(self.dimensions.con_type + "tdot" + self.contractionLabel, color = "purple"):
+                print(self.dimensions.tdotConDim)
                 torch.tensordot(self.atorch, self.btorch, dims = self.dimensions.tdotConDim)
 
         torch.cuda.cudart().cudaProfilerStart()
