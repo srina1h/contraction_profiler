@@ -184,7 +184,6 @@ class ContractionProfiler:
         del self.torchdType
         del self.cqinp
         del self.dimensions
-        del self.contractionLabel
         del self.extent
 
         cupy.get_default_memory_pool().free_all_blocks()
