@@ -101,7 +101,8 @@ class ContractionProfiler:
         # print(n_extent_a, n_extent_b, n_extent_c)
         # print(n_extent_a | n_extent_b | n_extent_c)
         if platform.version() < '3.9':
-            return dict(n_extent_a, **n_extent_b, **n_extent_c)
+            temp = dict(**n_extent_a, **n_extent_b)
+            return dict(**temp, **n_extent_c)
         else:
             return n_extent_a | n_extent_b | n_extent_c
     
