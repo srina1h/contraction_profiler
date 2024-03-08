@@ -178,7 +178,7 @@ class ContractionProfiler:
         correctness = self.check_correctness(-4)
 
         lowest_CPU = self.fastest_time([cutensor_default[0], cutensor_ttgt[0], cutensor_tgett[0], cutensor_gett[0], cutensor_default_patient[0], cuquantum[0], tensordot[0]])
-        lowest_GPU = self.fastest_time([cutensor_default[1], cutensor_ttgt[1], cutensor_tgett[1], cutensor_gett[1], cutensor_default_patient[1], cuquantum[0], tensordot[1]])
+        lowest_GPU = self.fastest_time([cutensor_default[1], cutensor_ttgt[1], cutensor_tgett[1], cutensor_gett[1], cutensor_default_patient[1], cuquantum[1], tensordot[1]])
 
         self.cleanup()
 
