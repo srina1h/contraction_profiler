@@ -102,10 +102,10 @@ class ContractionProfiler:
             perf = cupyx.time.repeat(con,n_warmup=1, n_repeat=5)
         except RuntimeError as e:
             print(str(e) + " - CuTensor Err (CUDA ERROR: SEGMENT not initialized usually due to OOM)")
-            return [float('inf'),float('inf')]
+            return [float('inf'), float('inf')]
         except:
             print("Error in cutensor")
-            return [float('inf'),float('inf')]
+            return [float('inf'), float('inf')]
         torch.cuda.cudart().cudaProfilerStop()
 
         return [perf.cpu_times.mean(), perf.gpu_times.mean()]
@@ -120,10 +120,10 @@ class ContractionProfiler:
             perf = cupyx.time.repeat(con,n_warmup=1, n_repeat=5)
         except RuntimeError as e:
             print(str(e) + " - CuQuantum Err (CUDA ERROR: SEGMENT not initialized usually due to OOM)")
-            return [float('inf'),float('inf')]
+            return [float('inf'), float('inf')]
         except:
             print("Error in cuQuantum")
-            return [float('inf'),float('inf')]
+            return [float('inf'), float('inf')]
         torch.cuda.cudart().cudaProfilerStop()
 
         return [perf.cpu_times.mean(), perf.gpu_times.mean()]
@@ -138,10 +138,10 @@ class ContractionProfiler:
             perf = cupyx.time.repeat(con,n_warmup=1, n_repeat=5)
         except RuntimeError as e:
             print(str(e) + " - Tensordot Err (CUDA ERROR: SEGMENT not initialized usually due to OOM)")
-            return [float('inf'),float('inf')]
+            return [float('inf'), float('inf')]
         except:
             print("Error in tensordot")
-            return [float('inf'),float('inf')]
+            return [float('inf'), float('inf')]
         torch.cuda.cudart().cudaProfilerStop()
 
         return [perf.cpu_times.mean(), perf.gpu_times.mean()]
@@ -172,7 +172,7 @@ class ContractionProfiler:
         cutensor_gett = self.profile_cutensor(-4)
         cutensor_default_patient = self.profile_cutensor(-6)
         # cuquantum = self.profile_cuquantum()
-        cuquantum = [float('inf'),float('inf')]
+        cuquantum = [float('inf'), float('inf')]
         tensordot = self.profile_tensordot()
 
         correctness = self.check_correctness(-4)
