@@ -72,7 +72,7 @@ beta = 0
 
 def con():
     with nvtx.annotate(con_type + "gett", color = "purple"):
-        cutensor.contraction(alpha, a, desc_a, mode_a, b, desc_b, mode_b, beta, c, desc_c, mode_c, algo = -2)
+        cutensor.contraction(alpha, a, mode_a, b, mode_b, beta, c, mode_c, algo = -4)
 
 torch.cuda.cudart().cudaProfilerStart()
 perf1 = cupyx.time.repeat(con,n_warmup=1, n_repeat=5)
@@ -91,7 +91,7 @@ print('Total avg time: {}'.format(perf1.cpu_times.mean() + perf1.gpu_times.mean(
 
 def con2():
     with nvtx.annotate(con_type + "def", color = "purple"):
-        cutensor.contraction(alpha, a, desc_a, mode_a, b, desc_b, mode_b, beta, c, desc_c, mode_c, algo = -1)
+        cutensor.contraction(alpha, a, mode_a, b, mode_b, beta, c, mode_c, algo = -1)
 
 torch.cuda.cudart().cudaProfilerStart()
 perf2 = cupyx.time.repeat(con2,n_warmup=1, n_repeat=5)
@@ -110,7 +110,7 @@ print('Total avg time: {}'.format(perf2.cpu_times.mean() + perf2.gpu_times.mean(
 
 def con3():
     with nvtx.annotate(con_type + "ttgt", color = "purple"):
-        cutensor.contraction(alpha, a, desc_a, mode_a, b, desc_b, mode_b, beta, c, desc_c, mode_c, algo = -2)
+        cutensor.contraction(alpha, a, mode_a, b, mode_b, beta, c, mode_c, algo = -2)
 
 torch.cuda.cudart().cudaProfilerStart()
 perf3 = cupyx.time.repeat(con3,n_warmup=1, n_repeat=5)
@@ -165,7 +165,7 @@ print('Total avg time: {}'.format(perf5.cpu_times.mean() + perf5.gpu_times.mean(
 
 # Correctness check
 
-cu = cutensor.contraction(alpha, a, desc_a, mode_a, b, desc_b, mode_b, beta, c, desc_c, mode_c, algo = -2)
+cu = cutensor.contraction(alpha, a, mode_a, b, mode_b, beta, c, mode_c, algo = -2)
 
 to = torch.tensordot(atorch, btorch, dims = ([1],[0]))
 
