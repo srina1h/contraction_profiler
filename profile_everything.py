@@ -12,8 +12,8 @@ dtype = numpy.float32
 # B reshape torch.Size([20, 768])
 # final torch.Size([4096, 20])
 
-# atorch = torch.rand((4096, 768), device = 'cuda', dtype = torch.float16)
-# btorch = torch.rand((20, 768), device = 'cuda', dtype = torch.float16)
+atorch = torch.rand((4096, 768), device = 'cuda', dtype = torch.float16)
+btorch = torch.rand((20, 768), device = 'cuda', dtype = torch.float16)
 
 mode_a = ('a', 'b')
 mode_b = ('c', 'b')
@@ -49,8 +49,8 @@ con_type = "ab * cb -> ac"
 a = cupy.random.random([extent[i] for i in mode_a])
 b = cupy.random.random([extent[i] for i in mode_b])
 c = cupy.random.random([extent[i] for i in mode_c])
-atorch = torch.as_tensor(a, device = 'cuda')
-btorch = torch.as_tensor(b, device = 'cuda')
+# atorch = torch.as_tensor(a, device = 'cuda')
+# btorch = torch.as_tensor(b, device = 'cuda')
 a = a.astype(dtype)
 b = b.astype(dtype)
 c = c.astype(dtype)
