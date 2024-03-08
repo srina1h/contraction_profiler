@@ -12,8 +12,8 @@ dtype = numpy.float32
 # B reshape torch.Size([20, 768])
 # final torch.Size([4096, 20])
 
-atorch = torch.rand((4096, 768), device = 'cuda', dtype = torch.float16)
-btorch = torch.rand((20, 768), device = 'cuda', dtype = torch.float16)
+atorch = torch.rand((4096, 768), device = 'cuda', dtype = torch.float32)
+btorch = torch.rand((20, 768), device = 'cuda', dtype = torch.float32)
 
 mode_a = ('a', 'b')
 mode_b = ('c', 'b')
