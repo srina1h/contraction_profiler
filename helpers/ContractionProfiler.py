@@ -112,7 +112,12 @@ class ContractionProfiler:
                 cutensor.contraction(self.alpha, self.a, self.mode_a, self.b, self.mode_b, self.beta, self.c, self.mode_c, algo = algo_number)
 
         torch.cuda.cudart().cudaProfilerStart()
-        perf = cupyx.time.repeat(con,n_warmup=1, n_repeat=5)
+        try:
+            perf = cupyx.time.repeat(con,n_warmup=1, n_repeat=5)
+        except RuntimeError as e:
+            print(str(e) + " - CuTensor Err (CUDA ERROR: SEGMENT not initialized usually due to OOM)")
+        except:
+            print("Error in cutensor")
         torch.cuda.cudart().cudaProfilerStop()
 
         return [perf.cpu_times.mean(), perf.gpu_times.mean()]
@@ -123,7 +128,12 @@ class ContractionProfiler:
                 contract(self.cqinp, self.atorch, self.btorch)
 
         torch.cuda.cudart().cudaProfilerStart()
-        perf = cupyx.time.repeat(con,n_warmup=1, n_repeat=5)
+        try:
+            perf = cupyx.time.repeat(con,n_warmup=1, n_repeat=5)
+        except RuntimeError as e:
+            print(str(e) + " - CuQuantum Err (CUDA ERROR: SEGMENT not initialized usually due to OOM)")
+        except:
+            print("Error in cuQuantum")
         torch.cuda.cudart().cudaProfilerStop()
 
         return [perf.cpu_times.mean(), perf.gpu_times.mean()]
@@ -131,18 +141,30 @@ class ContractionProfiler:
     def profile_tensordot(self) -> list:
         def con():
             with nvtx.annotate(self.dimensions.con_type + "tdot" + self.contractionLabel, color = "purple"):
-                print(self.dimensions.tdotConDim)
                 torch.tensordot(self.atorch, self.btorch, dims = self.dimensions.tdotConDim)
 
         torch.cuda.cudart().cudaProfilerStart()
-        perf = cupyx.time.repeat(con,n_warmup=1, n_repeat=5)
+        try:
+            perf = cupyx.time.repeat(con,n_warmup=1, n_repeat=5)
+        except RuntimeError as e:
+            print(str(e) + " - Tensordot Err (CUDA ERROR: SEGMENT not initialized usually due to OOM)")
+        except:
+            print("Error in tensordot")
         torch.cuda.cudart().cudaProfilerStop()
 
         return [perf.cpu_times.mean(), perf.gpu_times.mean()]
 
     def check_correctness(self, algo_number) -> bool:
-        cu = cutensor.contraction(self.alpha, self.a, self.mode_a, self.b, self.mode_b, self.beta, self.c, self.mode_c, algo = algo_number)
-        to = torch.tensordot(self.atorch, self.btorch, dims = self.dimensions.tdotConDim)
+        try:
+            cu = cutensor.contraction(self.alpha, self.a, self.mode_a, self.b, self.mode_b, self.beta, self.c, self.mode_c, algo = algo_number)
+            to = torch.tensordot(self.atorch, self.btorch, dims = self.dimensions.tdotConDim)
+        except RuntimeError as e:
+            print(str(e) + " - Correctness check Err (CUDA ERROR: SEGMENT not initialized usually due to OOM)")
+            return False
+        except:
+            print("Error in Correctness")
+            return False
+        
         # cuq = contract(self.cqinp, self.atorch, self.btorch)
 
         # if numpy.array_equal(cupy.asnumpy(cu), to.numpy) and numpy.array_equal(to.numpy, cuq.numpy) and numpy.array_equal(cuq.numpy, to.numpy):
