@@ -23,27 +23,16 @@ class ContractionProfiler:
         self.set_modes(self.dimensions.con_type)
         self.extent = self.set_extents(self.dimensions.adim, self.dimensions.bdim, self.dimensions.cdim, self.mode_a, self.mode_b, self.mode_c)
 
-        self.atorch = torch.rand(self.dimensions.adim, device = 'cuda', dtype = self.torchdType)
-        self.btorch = torch.rand(self.dimensions.bdim, device = 'cuda', dtype = self.torchdType)
-        print(dimensions.con_type)
-
-        self.a = cupy.asarray(self.atorch)
-        self.b = cupy.asarray(self.btorch)
-        # self.a = cupy.random.random([self.extent[i] for i in self.mode_a])
-        # self.b = cupy.random.random([self.extent[i] for i in self.mode_b])
+        self.a = cupy.random.random([self.extent[i] for i in self.mode_a])
+        self.b = cupy.random.random([self.extent[i] for i in self.mode_b])
         self.c = cupy.random.random([self.extent[i] for i in self.mode_c])
 
-        # print(self.dtype)
         self.a = self.a.astype(self.dtype)
         self.b = self.b.astype(self.dtype)
         self.c = self.c.astype(self.dtype)
 
-        # self.atorch = torch.as_tensor(self.a, device = 'cuda')
-        # self.btorch = torch.as_tensor(self.b, device = 'cuda')
-
-        self.desc_a = cutensor.create_tensor_descriptor(self.a)
-        self.desc_b = cutensor.create_tensor_descriptor(self.b)
-        self.desc_c = cutensor.create_tensor_descriptor(self.c)
+        self.atorch = torch.as_tensor(self.a, device = 'cuda')
+        self.btorch = torch.as_tensor(self.b, device = 'cuda')
 
         self.mode_a = cutensor.create_mode(*self.mode_a)
         self.mode_b = cutensor.create_mode(*self.mode_b)
@@ -90,7 +79,6 @@ class ContractionProfiler:
         extent_c = {}
 
         def populate_extent(extent, mode, dim):
-            # print(extent, mode, dim, len(mode), len(dim))
             for i in range(len(mode)):
                 extent[mode[i]] = dim[i]
             return extent
@@ -98,8 +86,6 @@ class ContractionProfiler:
         n_extent_a = populate_extent(extent_a, mode_a, adim)
         n_extent_b = populate_extent(extent_b, mode_b, bdim)
         n_extent_c = populate_extent(extent_c, mode_c, cdim)
-        # print(n_extent_a, n_extent_b, n_extent_c)
-        # print(n_extent_a | n_extent_b | n_extent_c)
         if platform.version() < '3.9':
             temp = {**n_extent_a, **n_extent_b}
             return {**temp, **n_extent_c}
@@ -207,9 +193,6 @@ class ContractionProfiler:
         del self.c
         del self.atorch
         del self.btorch
-        del self.desc_a
-        del self.desc_b
-        del self.desc_c
         del self.mode_a
         del self.mode_b
         del self.mode_c
