@@ -16,19 +16,19 @@ dtype = numpy.float32
 # btorch = torch.rand((20, 768), device = 'cuda', dtype = torch.float16)
 
 mode_a = ('a', 'b')
-mode_b = ('c', 'd', 'e', 'f')
+mode_b = ('c', 'b')
 mode_c = ('a', 'c')
-extent = {'a': 4096, 'b': 768, 'c': 20, 'd': 8, 'e': 8, 'f': 12}
-con_type = "ab * cdef -> ac"
+extent = {'a': 4096, 'b': 768, 'c': 20}
+con_type = "ab * cb -> ac"
 
 # atorch = torch.rand((4096, 768), device = 'cuda')
 # btorch = torch.rand((20, 768), device = 'cuda')
 
-mode_a = ('a', 'b')
-mode_b = ('b', 'c')
-mode_c = ('a', 'c')
-extent = {'a': 2, 'b': 2, 'c': 2}
-con_type = "ab * cb -> ac"
+# mode_a = ('a', 'b')
+# mode_b = ('b', 'c')
+# mode_c = ('a', 'c')
+# extent = {'a': 2, 'b': 2, 'c': 2}
+# con_type = "ab * cb -> ac"
 # atorch = torch.rand((2,2), device = 'cuda')
 # btorch = torch.rand((2,2), device = 'cuda')
 
@@ -57,10 +57,6 @@ c = c.astype(dtype)
 
 # atorch = torch.from_numpy(cupy.asnumpy(a)).to('cuda')
 # btorch = torch.from_numpy(cupy.asnumpy(b)).to('cuda')
-
-desc_a = cutensor.create_tensor_descriptor(a)
-desc_b = cutensor.create_tensor_descriptor(b)
-desc_c = cutensor.create_tensor_descriptor(c)
 
 mode_a = cutensor.create_mode(*mode_a)
 mode_b = cutensor.create_mode(*mode_b)
