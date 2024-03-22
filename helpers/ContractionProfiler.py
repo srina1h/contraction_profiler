@@ -152,14 +152,14 @@ class ContractionProfiler:
                 cupy.einsum(self.parse_contype_einsum(con_type), self.a, self.b)
 
         torch.cuda.cudart().cudaProfilerStart()
-        # try:
-        perf = cupyx.time.repeat(con,n_warmup=1, n_repeat=5)
-        # except RuntimeError as e:
-        #     print(str(e) + " - Einsum Err (CUDA ERROR: SEGMENT not initialized usually due to OOM)")
-        #     return [float('inf'), float('inf')]
-        # except:
-        #     print("Error in einsum")
-        #     return [float('inf'), float('inf')]
+        try:
+            perf = cupyx.time.repeat(con,n_warmup=1, n_repeat=5)
+        except RuntimeError as e:
+            print(str(e) + " - Einsum Err (CUDA ERROR: SEGMENT not initialized usually due to OOM)")
+            return [float('inf'), float('inf')]
+        except:
+            print("Error in einsum")
+            return [float('inf'), float('inf')]
         torch.cuda.cudart().cudaProfilerStop()
 
         return [perf.cpu_times.mean(), perf.gpu_times.mean()]
