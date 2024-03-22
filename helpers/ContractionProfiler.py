@@ -184,7 +184,7 @@ class ContractionProfiler:
             return False
     
     def parse_contype_einsum(self, con_type) -> list:
-        modified_con_type = con_type.replace("->", ",")
+        modified_con_type = con_type.replace("*", ",")
         return modified_con_type
     
     def profile_all(self) -> list[str, list, list, list, list, list, list, list, list, bool, float, float, list]:
