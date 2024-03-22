@@ -141,6 +141,8 @@ print('Avg CPU time: {}'.format(perf4.cpu_times.mean()))
 print('Avg Gpu time: {}'.format(perf4.gpu_times.mean()))
 print('Total avg time: {}'.format(perf4.cpu_times.mean() + perf4.gpu_times.mean()))
 
+# einsum
+
 def con5():
     with nvtx.annotate(con_type + "esum", color = "purple"):
         cupy.einsum('ab, bc->ac', a, b)
