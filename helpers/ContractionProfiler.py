@@ -179,6 +179,7 @@ class ContractionProfiler:
 
         # if numpy.array_equal(cupy.asnumpy(cu), to.numpy) and numpy.array_equal(to.numpy, cuq.numpy) and numpy.array_equal(cuq.numpy, to.numpy):
         randoma = cupy.asnumpy(cu)
+        print(type(randoma))
         randoma.astype(numpy.float32)
         randomb = to.numpy
         randomb.astype(numpy.float32)
