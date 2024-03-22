@@ -178,7 +178,11 @@ class ContractionProfiler:
         # cuq = contract(self.cqinp, self.atorch, self.btorch)
 
         # if numpy.array_equal(cupy.asnumpy(cu), to.numpy) and numpy.array_equal(to.numpy, cuq.numpy) and numpy.array_equal(cuq.numpy, to.numpy):
-        if numpy.allclose(cupy.asnumpy(cu), to.numpy):
+        a = cupy.asnumpy(cu)
+        a = numpy.array(a, dtype = self.dtype)
+        b = to.numpy
+        b = numpy.array(b, dtype = self.dtype)
+        if numpy.allclose(a,b):
             return True
         else:
             return False
