@@ -178,11 +178,11 @@ class ContractionProfiler:
         # cuq = contract(self.cqinp, self.atorch, self.btorch)
 
         # if numpy.array_equal(cupy.asnumpy(cu), to.numpy) and numpy.array_equal(to.numpy, cuq.numpy) and numpy.array_equal(cuq.numpy, to.numpy):
-        a = cupy.asnumpy(cu)
-        a.astype(numpy.float32)
-        b = to.numpy
-        b.astype(numpy.float32)
-        if numpy.allclose(a,b):
+        randoma = cupy.asnumpy(cu)
+        randoma.astype(numpy.float32)
+        randomb = to.numpy
+        randomb.astype(numpy.float32)
+        if numpy.allclose(randoma,randomb):
             return True
         else:
             return False
