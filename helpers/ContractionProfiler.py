@@ -180,7 +180,7 @@ class ContractionProfiler:
         # if numpy.array_equal(cupy.asnumpy(cu), to.numpy) and numpy.array_equal(to.numpy, cuq.numpy) and numpy.array_equal(cuq.numpy, to.numpy):
         randoma = numpy.array(cupy.asnumpy(cu))
         randoma = randoma.astype(float)
-        randomb = numpy.array(to.numpy())
+        randomb = numpy.array(to.cpu().numpy())
         randomb = randomb.astype(float)
         if numpy.allclose(randoma,randomb):
             return True
