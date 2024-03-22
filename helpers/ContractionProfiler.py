@@ -178,7 +178,7 @@ class ContractionProfiler:
         # cuq = contract(self.cqinp, self.atorch, self.btorch)
 
         # if numpy.array_equal(cupy.asnumpy(cu), to.numpy) and numpy.array_equal(to.numpy, cuq.numpy) and numpy.array_equal(cuq.numpy, to.numpy):
-        randoma = cupy.asnumpy(cu)
+        randoma = numpy.array(cupy.asnumpy(cu))
         print(type(randoma))
         randoma = randoma.astype(numpy.float32)
         randomb = to.numpy
