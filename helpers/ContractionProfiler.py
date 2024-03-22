@@ -179,9 +179,9 @@ class ContractionProfiler:
 
         # if numpy.array_equal(cupy.asnumpy(cu), to.numpy) and numpy.array_equal(to.numpy, cuq.numpy) and numpy.array_equal(cuq.numpy, to.numpy):
         a = cupy.asnumpy(cu)
-        a = numpy.array(a, dtype = self.dtype)
+        a.astype(self.dtype)
         b = to.numpy
-        b = numpy.array(b, dtype = self.dtype)
+        b.astype(self.dtype)
         if numpy.allclose(a,b):
             return True
         else:
