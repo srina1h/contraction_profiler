@@ -145,6 +145,24 @@ class ContractionProfiler:
         torch.cuda.cudart().cudaProfilerStop()
 
         return [perf.cpu_times.mean(), perf.gpu_times.mean()]
+    
+    def profile_einsum(self, con_type) -> list:
+        def con():
+            with nvtx.annotate(con_type + "ein" + self.contractionLabel, color = "purple"):
+                cupy.einsum(self.parse_contype_einsum(con_type), self.a, self.b)
+
+        torch.cuda.cudart().cudaProfilerStart()
+        try:
+            perf = cupyx.time.repeat(con,n_warmup=1, n_repeat=5)
+        except RuntimeError as e:
+            print(str(e) + " - Einsum Err (CUDA ERROR: SEGMENT not initialized usually due to OOM)")
+            return [float('inf'), float('inf')]
+        except:
+            print("Error in einsum")
+            return [float('inf'), float('inf')]
+        torch.cuda.cudart().cudaProfilerStop()
+
+        return [perf.cpu_times.mean(), perf.gpu_times.mean()]
 
     def check_correctness(self, algo_number) -> bool:
         try:
@@ -165,6 +183,10 @@ class ContractionProfiler:
         else:
             return False
     
+    def parse_contype_einsum(self, con_type) -> list:
+        modified_con_type = con_type.replace("->", ",")
+        return modified_con_type
+    
     def profile_all(self) -> (list, list, list, list, list, list, bool):
         cutensor_default = self.profile_cutensor(-1)
         cutensor_ttgt = self.profile_cutensor(-2)
@@ -174,15 +196,16 @@ class ContractionProfiler:
         # cuquantum = self.profile_cuquantum()
         cuquantum = [float('inf'), float('inf')]
         tensordot = self.profile_tensordot()
+        einsum = self.profile_einsum(self.dimensions.con_type)
 
         correctness = self.check_correctness(-4)
 
-        lowest_CPU = self.fastest_time([cutensor_default[0], cutensor_ttgt[0], cutensor_tgett[0], cutensor_gett[0], cutensor_default_patient[0], cuquantum[0], tensordot[0]])
-        lowest_GPU = self.fastest_time([cutensor_default[1], cutensor_ttgt[1], cutensor_tgett[1], cutensor_gett[1], cutensor_default_patient[1], cuquantum[1], tensordot[1]])
+        lowest_CPU = self.fastest_time([cutensor_default[0], cutensor_ttgt[0], cutensor_tgett[0], cutensor_gett[0], cutensor_default_patient[0], cuquantum[0], tensordot[0], einsum[0]])
+        lowest_GPU = self.fastest_time([cutensor_default[1], cutensor_ttgt[1], cutensor_tgett[1], cutensor_gett[1], cutensor_default_patient[1], cuquantum[1], tensordot[1], einsum[1]])
 
         self.cleanup()
 
-        return [self.contractionLabel, cutensor_default, cutensor_ttgt, cutensor_tgett, cutensor_gett, cutensor_default_patient, cuquantum, tensordot, correctness, lowest_CPU, lowest_GPU]
+        return [self.contractionLabel, cutensor_default, cutensor_ttgt, cutensor_tgett, cutensor_gett, cutensor_default_patient, cuquantum, tensordot, einsum, correctness, lowest_CPU, lowest_GPU]
 
     def fastest_time(self, inp) -> int:
         return algorithms[inp.index(min(inp))]
