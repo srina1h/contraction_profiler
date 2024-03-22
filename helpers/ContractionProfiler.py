@@ -182,7 +182,7 @@ class ContractionProfiler:
         randoma = randoma.astype(float)
         randomb = numpy.array(to.cpu().numpy())
         randomb = randomb.astype(float)
-        if numpy.allclose(randoma,randomb):
+        if numpy.allclose(cupy.asnumpy(cu),to.cpu().numpy()):
             return True
         else:
             return False
