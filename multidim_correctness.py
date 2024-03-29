@@ -39,6 +39,10 @@ print(btorch)
 cu = cutensor.contraction(alpha, a, mode_a, b, mode_b, beta, c, mode_c, algo = -4)
 btorch = btorch.reshape(3, 4)
 to = torch.tensordot(atorch, btorch, dims = ([1],[1]))
+print("C ----------------")
+print(cupy.asnumpy(cu))
+print("Torch ----------------")
+print(to.cpu().numpy())
 
 if numpy.allclose(cupy.asnumpy(cu),to.cpu().numpy(), atol=1e-1, rtol=1e-1):
     print("True")
