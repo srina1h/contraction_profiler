@@ -31,20 +31,20 @@ class ContractionProfiler:
             self.c = cupy.random.random([self.extent[i] for i in self.mode_c])
         except:
             print("Memory allocation error")
-            return self.generate_memory_allocation_failure_return()
+            self.hasCrashed = True
+        else:
+            self.a = self.a.astype(self.dtype)
+            self.b = self.b.astype(self.dtype)
+            self.c = self.c.astype(self.dtype)
 
-        self.a = self.a.astype(self.dtype)
-        self.b = self.b.astype(self.dtype)
-        self.c = self.c.astype(self.dtype)
+            self.atorch = torch.as_tensor(self.a, device = 'cuda')
+            self.btorch = torch.as_tensor(self.b, device = 'cuda')
 
-        self.atorch = torch.as_tensor(self.a, device = 'cuda')
-        self.btorch = torch.as_tensor(self.b, device = 'cuda')
-
-        self.mode_a = cutensor.create_mode(*self.mode_a)
-        self.mode_b = cutensor.create_mode(*self.mode_b)
-        self.mode_c = cutensor.create_mode(*self.mode_c)
-        self.alpha = 1
-        self.beta = 0
+            self.mode_a = cutensor.create_mode(*self.mode_a)
+            self.mode_b = cutensor.create_mode(*self.mode_b)
+            self.mode_c = cutensor.create_mode(*self.mode_c)
+            self.alpha = 1
+            self.beta = 0
 
     def setDtype(self, dataType) -> None:
         if dataType == "float32":
@@ -192,6 +192,8 @@ class ContractionProfiler:
         return modified_con_type
     
     def profile_all(self) -> list[str, list, list, list, list, list, list, list, list, bool, float, float, list]:
+        if self.hasCrashed
+            return self.generate_memory_allocation_failure_return()
         cutensor_default = self.profile_cutensor(-1)
         cutensor_ttgt = self.profile_cutensor(-2)
         cutensor_tgett = self.profile_cutensor(-3)
