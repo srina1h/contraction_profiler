@@ -18,11 +18,11 @@ algorithms = ["ALGO_DEFAULT","ALGO_TTGT", "ALGO_TGETT", "ALGO_GETT", "ALGO_DEFAU
 
 class ContractionProfiler:
     def __init__(self, dimensions: Dimensions, contractionLabel: str = "") -> None:
+        self.hasCrashed = False
         self.dimensions = dimensions
         self.setDtype(self.dimensions.dataType)
         self.set_modes(self.dimensions.con_type)
         self.extent = self.set_extents(self.dimensions.adim, self.dimensions.bdim, self.dimensions.cdim, self.mode_a, self.mode_b, self.mode_c)
-        
         self.contractionLabel = contractionLabel
 
         try:
