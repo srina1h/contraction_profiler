@@ -23,9 +23,13 @@ class ContractionProfiler:
         self.set_modes(self.dimensions.con_type)
         self.extent = self.set_extents(self.dimensions.adim, self.dimensions.bdim, self.dimensions.cdim, self.mode_a, self.mode_b, self.mode_c)
 
-        self.a = cupy.random.random([self.extent[i] for i in self.mode_a])
-        self.b = cupy.random.random([self.extent[i] for i in self.mode_b])
-        self.c = cupy.random.random([self.extent[i] for i in self.mode_c])
+        try:
+            self.a = cupy.random.random([self.extent[i] for i in self.mode_a])
+            self.b = cupy.random.random([self.extent[i] for i in self.mode_b])
+            self.c = cupy.random.random([self.extent[i] for i in self.mode_c])
+        except:
+            print("Memory allocation error")
+            self.generate_memory_allocation_failure_return()
 
         self.a = self.a.astype(self.dtype)
         self.b = self.b.astype(self.dtype)
@@ -240,3 +244,6 @@ class ContractionProfiler:
         cupy.get_default_memory_pool().free_all_blocks()
         cupy.get_default_pinned_memory_pool().free_all_blocks()
         torch.cuda.empty_cache()
+    
+    def generate_memory_allocation_failure_return(self):
+        return [self.contractionLabel, [float('inf'), float('inf')], [float('inf'), float('inf')], [float('inf'), float('inf')], [float('inf'), float('inf')], [float('inf'), float('inf')], [float('inf'), float('inf')], [float('inf'), float('inf')], [float('inf'), float('inf')], False, "None", "None", [0,0]]
