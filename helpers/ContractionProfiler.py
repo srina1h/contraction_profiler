@@ -192,7 +192,7 @@ class ContractionProfiler:
         return modified_con_type
     
     def profile_all(self) -> list[str, list, list, list, list, list, list, list, list, bool, float, float, list]:
-        if self.hasCrashed
+        if self.hasCrashed:
             return self.generate_memory_allocation_failure_return()
         cutensor_default = self.profile_cutensor(-1)
         cutensor_ttgt = self.profile_cutensor(-2)
