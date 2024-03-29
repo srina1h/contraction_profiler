@@ -22,7 +22,9 @@ class ContractionProfiler:
         self.setDtype(self.dimensions.dataType)
         self.set_modes(self.dimensions.con_type)
         self.extent = self.set_extents(self.dimensions.adim, self.dimensions.bdim, self.dimensions.cdim, self.mode_a, self.mode_b, self.mode_c)
-
+        
+        self.contractionLabel = contractionLabel
+        
         try:
             self.a = cupy.random.random([self.extent[i] for i in self.mode_a])
             self.b = cupy.random.random([self.extent[i] for i in self.mode_b])
@@ -43,8 +45,6 @@ class ContractionProfiler:
         self.mode_c = cutensor.create_mode(*self.mode_c)
         self.alpha = 1
         self.beta = 0
-
-        self.contractionLabel = contractionLabel
 
     def setDtype(self, dataType) -> None:
         if dataType == "float32":
