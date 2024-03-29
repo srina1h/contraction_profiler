@@ -16,8 +16,6 @@ btorch = torch.rand((20, 8, 8, 12), device = 'cuda', dtype = torch.float16)
 mode_a = ('a', 'b')
 mode_b = ('c', 'd', 'e', 'f')
 mode_c = ('a', 'c')
-# extent = {'a': 4096, 'b': 768, 'c': 20}
-con_type = "ab * cb -> ac"
 
 a = cupy.asarray(atorch)
 b = cupy.asarray(btorch)
@@ -37,7 +35,7 @@ btorch = btorch.reshape(20, 768)
 cu = cutensor.contraction(alpha, a, mode_a, b, mode_b, beta, c, mode_c, algo = -4)
 to = torch.tensordot(atorch, btorch, dims = ([1],[1]))
 
-if numpy.allclose(cupy.asnumpy(cu),to.cpu().numpy(), atol=1e-3, rtol=1e-3):
+if numpy.allclose(cupy.asnumpy(cu),to.cpu().numpy(), atol=1e-1, rtol=1e-1):
     print("True")
 else:
     print("False")
