@@ -38,6 +38,8 @@ print(btorch)
 
 cu = cutensor.contraction(alpha, a, mode_a, b, mode_b, beta, c, mode_c, algo = -4)
 btorch = btorch.reshape(3, 4)
+print("B reshape ----------------")
+print(btorch)
 to = torch.tensordot(atorch, btorch, dims = ([1],[1]))
 print("C ----------------")
 print(cupy.asnumpy(cu))
