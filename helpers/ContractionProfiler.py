@@ -8,7 +8,7 @@ import platform
 # from cuquantum import contract
 from helpers.Dimensions import *
 
-algorithms = ["ALGO_DEFAULT","ALGO_TTGT", "ALGO_TGETT", "ALGO_GETT", "ALGO_DEFAULT_PATIENT" , "cuquantum", "tensordot"]
+algorithms = ["ALGO_DEFAULT","ALGO_TTGT", "ALGO_TGETT", "ALGO_GETT", "ALGO_DEFAULT_PATIENT" , "cuquantum", "tensordot", "einsum"]
 
 # ALGO_DEFAULT_PATIENT = -6  # NOQA, Uses the more accurate but also more time-consuming performance model
 # ALGO_GETT = -4             # NOQA, Choose the GETT algorithm
