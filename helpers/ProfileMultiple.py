@@ -4,7 +4,7 @@ import pandas as pd
 import ast
 
 class ProfileMultiple:
-    def __init__(self, file_input: str, output_filepath: str, type: str) -> None:
+    def __init__(self, file_input: str, output_filepath: str, type: str, baseline: str) -> None:
         self.file_input = file_input
         if type == "csv":
             self.csv_file = file_input
@@ -14,13 +14,14 @@ class ProfileMultiple:
             self.data = pd.read_excel(self.xlsx_file)
         self.output_filepath = output_filepath
         self.results = []
+        self.baseline = baseline
         self.profile()
         self.export()
 
     def profile(self) -> None:
         for index, row in self.data.iterrows():
             dimensions = Dimensions(ast.literal_eval(row['adim']), ast.literal_eval(row['bdim']), ast.literal_eval(row['cdim']), ast.literal_eval(row['condim']), row['type'], row['dtype'])
-            profiler = ContractionProfiler(dimensions, row['label'])
+            profiler = ContractionProfiler(dimensions, row['label'], self.baseline)
             result = profiler.profile_all()
             self.results.append(result)
             del profiler
