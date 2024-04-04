@@ -29,6 +29,10 @@ class ContractionProfiler:
         elif baseline == 'ttgt':
             self.baseline = -2
 
+        self.theoretical_size_a = self.calculate_array_theoretical_memory_requirement(self.dimensions.adim, self.dimensions.dataType)
+        self.theoretical_size_b = self.calculate_array_theoretical_memory_requirement(self.dimensions.bdim, self.dimensions.dataType)
+        self.theoretical_size_c = self.calculate_array_theoretical_memory_requirement(self.dimensions.cdim, self.dimensions.dataType)
+        self.total_theoretical_memory = self.theoretical_size_a + self.theoretical_size_b + self.theoretical_size_c
         try:
             self.a = cupy.random.random([self.extent[i] for i in self.mode_a])
             self.b = cupy.random.random([self.extent[i] for i in self.mode_b])
@@ -222,7 +226,7 @@ class ContractionProfiler:
 
         self.cleanup()
 
-        return [self.contractionLabel, cutensor_default, cutensor_ttgt, cutensor_tgett, cutensor_gett, cutensor_default_patient, cuquantum, tensordot, einsum, correctness, lowest_CPU, lowest_GPU, speedup_over_baseline]
+        return [self.contractionLabel, cutensor_default, cutensor_ttgt, cutensor_tgett, cutensor_gett, cutensor_default_patient, cuquantum, tensordot, einsum, correctness, lowest_CPU, lowest_GPU, speedup_over_baseline, self.total_theoretical_memory]
 
     def fastest_time(self, inp) -> int:
         return algorithms[inp.index(min(inp))]
@@ -255,4 +259,14 @@ class ContractionProfiler:
         torch.cuda.empty_cache()
     
     def generate_memory_allocation_failure_return(self):
-        return [self.contractionLabel, [float('inf'), float('inf')], [float('inf'), float('inf')], [float('inf'), float('inf')], [float('inf'), float('inf')], [float('inf'), float('inf')], [float('inf'), float('inf')], [float('inf'), float('inf')], [float('inf'), float('inf')], False, "None", "None", [0,0]]
+        return [self.contractionLabel, [float('inf'), float('inf')], [float('inf'), float('inf')], [float('inf'), float('inf')], [float('inf'), float('inf')], [float('inf'), float('inf')], [float('inf'), float('inf')], [float('inf'), float('inf')], [float('inf'), float('inf')], False, "None", "None", [0,0], self.total_theoretical_memory]
+    
+    def calculate_array_theoretical_memory_requirement(dim: tuple, dtype: str):
+        if dtype == "float32":
+            dtype_size = 32
+        elif dtype == "float16":
+            dtype_size = 16
+        elif dtype == "int8":
+            dtype_size = 8
+        
+        return numpy.prod(numpy.array(list(dim))) * dtype_size/8
