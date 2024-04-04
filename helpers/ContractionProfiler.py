@@ -17,13 +17,17 @@ algorithms = ["ALGO_DEFAULT","ALGO_TTGT", "ALGO_TGETT", "ALGO_GETT", "ALGO_DEFAU
 # ALGO_DEFAULT = -1          # NOQA, Lets the internal heuristic choose
 
 class ContractionProfiler:
-    def __init__(self, dimensions: Dimensions, contractionLabel: str = "") -> None:
+    def __init__(self, dimensions: Dimensions, contractionLabel: str = "", baseline: str = 'tdot') -> None:
         self.hasCrashed = False
         self.dimensions = dimensions
         self.setDtype(self.dimensions.dataType)
         self.set_modes(self.dimensions.con_type)
         self.extent = self.set_extents(self.dimensions.adim, self.dimensions.bdim, self.dimensions.cdim, self.mode_a, self.mode_b, self.mode_c)
         self.contractionLabel = contractionLabel
+        if baseline == 'tdot':
+            self.baseline = 1
+        elif baseline == 'ttgt':
+            self.baseline = -2
 
         try:
             self.a = cupy.random.random([self.extent[i] for i in self.mode_a])
@@ -211,11 +215,14 @@ class ContractionProfiler:
         fastest_CPU_value = self.fastest_time_value([cutensor_default[0], cutensor_ttgt[0], cutensor_tgett[0], cutensor_gett[0], cutensor_default_patient[0], cuquantum[0], tensordot[0], einsum[0]])
         fastest_GPU_value = self.fastest_time_value([cutensor_default[1], cutensor_ttgt[1], cutensor_tgett[1], cutensor_gett[1], cutensor_default_patient[1], cuquantum[1], tensordot[1], einsum[1]])
 
-        speedup_over_tdot = self.speedup(tensordot[0], tensordot[1], fastest_CPU_value, fastest_GPU_value)
+        if self.baseline == 1:
+            speedup_over_baseline = self.speedup(tensordot[0], tensordot[1], fastest_CPU_value, fastest_GPU_value)
+        elif self.baseline == -2:
+            speedup_over_baseline = self.speedup(cutensor_ttgt[0], cutensor_ttgt[1], fastest_CPU_value, fastest_GPU_value)
 
         self.cleanup()
 
-        return [self.contractionLabel, cutensor_default, cutensor_ttgt, cutensor_tgett, cutensor_gett, cutensor_default_patient, cuquantum, tensordot, einsum, correctness, lowest_CPU, lowest_GPU, speedup_over_tdot]
+        return [self.contractionLabel, cutensor_default, cutensor_ttgt, cutensor_tgett, cutensor_gett, cutensor_default_patient, cuquantum, tensordot, einsum, correctness, lowest_CPU, lowest_GPU, speedup_over_baseline]
 
     def fastest_time(self, inp) -> int:
         return algorithms[inp.index(min(inp))]
@@ -223,8 +230,8 @@ class ContractionProfiler:
     def fastest_time_value(self, inp) -> int:
         return min(inp)
 
-    def speedup(self, tdot_CPU, tdot_GPU, fastest_CPU, fastest_GPU) -> list:
-        return [tdot_CPU/fastest_CPU, tdot_GPU/fastest_GPU]
+    def speedup(self, baseline_CPU, baseline_GPU, fastest_CPU, fastest_GPU) -> list:
+        return [baseline_CPU/fastest_CPU, baseline_GPU/fastest_GPU]
     
     def cleanup(self) -> None:
         del self.a
