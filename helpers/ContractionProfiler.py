@@ -29,9 +29,9 @@ class ContractionProfiler:
         elif baseline == 'ttgt':
             self.baseline = -2
 
-        self.theoretical_size_a = self.calculate_array_theoretical_memory_requirement(self.dimensions.adim, self.dimensions.dataType)
-        self.theoretical_size_b = self.calculate_array_theoretical_memory_requirement(self.dimensions.bdim, self.dimensions.dataType)
-        self.theoretical_size_c = self.calculate_array_theoretical_memory_requirement(self.dimensions.cdim, self.dimensions.dataType)
+        self.theoretical_size_a = self.calculate_array_theoretical_memory_requirement(list(self.dimensions.adim), self.dimensions.dataType)
+        self.theoretical_size_b = self.calculate_array_theoretical_memory_requirement(list(self.dimensions.bdim), self.dimensions.dataType)
+        self.theoretical_size_c = self.calculate_array_theoretical_memory_requirement(list(self.dimensions.cdim), self.dimensions.dataType)
         self.total_theoretical_memory = self.theoretical_size_a + self.theoretical_size_b + self.theoretical_size_c
         try:
             self.a = cupy.random.random([self.extent[i] for i in self.mode_a])
@@ -261,7 +261,7 @@ class ContractionProfiler:
     def generate_memory_allocation_failure_return(self):
         return [self.contractionLabel, [float('inf'), float('inf')], [float('inf'), float('inf')], [float('inf'), float('inf')], [float('inf'), float('inf')], [float('inf'), float('inf')], [float('inf'), float('inf')], [float('inf'), float('inf')], [float('inf'), float('inf')], False, "None", "None", [0,0], self.total_theoretical_memory]
     
-    def calculate_array_theoretical_memory_requirement(dim: tuple, dtype: str):
+    def calculate_array_theoretical_memory_requirement(dim: list, dtype: str):
         if dtype == "float32":
             dtype_size = 32
         elif dtype == "float16":
@@ -269,4 +269,4 @@ class ContractionProfiler:
         elif dtype == "int8":
             dtype_size = 8
         
-        return numpy.prod(numpy.array(list(dim))) * dtype_size/8
+        return numpy.prod(numpy.array(dim)) * dtype_size/8
