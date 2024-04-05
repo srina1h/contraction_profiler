@@ -261,7 +261,7 @@ class ContractionProfiler:
     def generate_memory_allocation_failure_return(self):
         return [self.contractionLabel, [float('inf'), float('inf')], [float('inf'), float('inf')], [float('inf'), float('inf')], [float('inf'), float('inf')], [float('inf'), float('inf')], [float('inf'), float('inf')], [float('inf'), float('inf')], [float('inf'), float('inf')], False, "None", "None", [0,0], self.total_theoretical_memory]
     
-    def calculate_array_theoretical_memory_requirement(dim: list, dtype: str):
+    def calculate_array_theoretical_memory_requirement(self, dim: list, dtype: str):
         if dtype == "float32":
             dtype_size = 32
         elif dtype == "float16":
