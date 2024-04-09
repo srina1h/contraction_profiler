@@ -11,15 +11,17 @@ dtype = numpy.float16
 # final torch.Size([4096, 20])
 
 atorch = torch.rand((2, 4), device = 'cuda', dtype = torch.float16)
-btorch = torch.rand((3, 2, 2, 1), device = 'cuda', dtype = torch.float16)
+# btorch = torch.rand((3, 2, 2, 1), device = 'cuda', dtype = torch.float16)
+btorch = torch.rand((4, 3), device = 'cuda', dtype = torch.float16)
 
 mode_a = ('a', 'b')
-mode_b = ('c', 'd', 'e', 'f')
-mode_c = ('a', 'c')
+mode_b = ('b', 'c')
+# mode_c = ('a', 'c')
+mode_c = ('a')
 
 a = cupy.asarray(atorch)
 b = cupy.asarray(btorch)
-c = cupy.random.random([2, 3]).astype(dtype)
+c = cupy.random.random([1]).astype(dtype)
 
 # a = a.astype(dtype)
 # b = b.astype(dtype)
