@@ -29,6 +29,10 @@ class ContractionProfiler:
         elif baseline == 'ttgt':
             self.baseline = -2
 
+        self.theoretical_size_a = self.calculate_array_theoretical_memory_requirement(list(self.dimensions.adim), self.dimensions.dataType)
+        self.theoretical_size_b = self.calculate_array_theoretical_memory_requirement(list(self.dimensions.bdim), self.dimensions.dataType)
+        self.theoretical_size_c = self.calculate_array_theoretical_memory_requirement(list(self.dimensions.cdim), self.dimensions.dataType)
+        self.total_theoretical_memory = self.theoretical_size_a + self.theoretical_size_b + self.theoretical_size_c
         try:
             self.a = cupy.random.random([self.extent[i] for i in self.mode_a])
             self.b = cupy.random.random([self.extent[i] for i in self.mode_b])
@@ -43,6 +47,10 @@ class ContractionProfiler:
 
             self.atorch = torch.as_tensor(self.a, device = 'cuda')
             self.btorch = torch.as_tensor(self.b, device = 'cuda')
+
+            self.atorch_size = self.atorch.element_size() * self.atorch.nelement()
+            self.btorch_size = self.btorch.element_size() * self.btorch.nelement()
+            self.total_torch_memory = self.atorch_size + self.btorch_size
 
             self.mode_a = cutensor.create_mode(*self.mode_a)
             self.mode_b = cutensor.create_mode(*self.mode_b)
@@ -222,7 +230,7 @@ class ContractionProfiler:
 
         self.cleanup()
 
-        return [self.contractionLabel, cutensor_default, cutensor_ttgt, cutensor_tgett, cutensor_gett, cutensor_default_patient, cuquantum, tensordot, einsum, correctness, lowest_CPU, lowest_GPU, speedup_over_baseline]
+        return [self.contractionLabel, cutensor_default, cutensor_ttgt, cutensor_tgett, cutensor_gett, cutensor_default_patient, cuquantum, tensordot, einsum, correctness, lowest_CPU, lowest_GPU, speedup_over_baseline, self.total_theoretical_memory, self.total_torch_memory]
 
     def fastest_time(self, inp) -> int:
         return algorithms[inp.index(min(inp))]
@@ -255,4 +263,14 @@ class ContractionProfiler:
         torch.cuda.empty_cache()
     
     def generate_memory_allocation_failure_return(self):
-        return [self.contractionLabel, [float('inf'), float('inf')], [float('inf'), float('inf')], [float('inf'), float('inf')], [float('inf'), float('inf')], [float('inf'), float('inf')], [float('inf'), float('inf')], [float('inf'), float('inf')], [float('inf'), float('inf')], False, "None", "None", [0,0]]
+        return [self.contractionLabel, [float('inf'), float('inf')], [float('inf'), float('inf')], [float('inf'), float('inf')], [float('inf'), float('inf')], [float('inf'), float('inf')], [float('inf'), float('inf')], [float('inf'), float('inf')], [float('inf'), float('inf')], False, "None", "None", [0,0], self.total_theoretical_memory, float('inf')]
+    
+    def calculate_array_theoretical_memory_requirement(self, dim: list, dtype: str):
+        if dtype == "float32":
+            dtype_size = 32
+        elif dtype == "float16":
+            dtype_size = 16
+        elif dtype == "int8":
+            dtype_size = 8
+        
+        return numpy.prod(numpy.array(dim)) * dtype_size/8
