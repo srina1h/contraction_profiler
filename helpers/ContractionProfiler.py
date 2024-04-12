@@ -45,18 +45,27 @@ class ContractionProfiler:
             self.b = self.b.astype(self.dtype)
             self.c = self.c.astype(self.dtype)
 
-            self.atorch = torch.as_tensor(self.a, device = 'cuda')
-            self.btorch = torch.as_tensor(self.b, device = 'cuda')
+            # self.atorch = torch.as_tensor(self.a, device = 'cuda')
+            # self.btorch = torch.as_tensor(self.b, device = 'cuda')
 
-            self.atorch_size = self.atorch.element_size() * self.atorch.nelement()
-            self.btorch_size = self.btorch.element_size() * self.btorch.nelement()
-            self.total_torch_memory = self.atorch_size + self.btorch_size
+            # self.atorch_size = self.atorch.element_size() * self.atorch.nelement()
+            # self.btorch_size = self.btorch.element_size() * self.btorch.nelement()
+            # self.total_torch_memory = self.atorch_size + self.btorch_size
 
             self.mode_a = cutensor.create_mode(*self.mode_a)
             self.mode_b = cutensor.create_mode(*self.mode_b)
             self.mode_c = cutensor.create_mode(*self.mode_c)
             self.alpha = 1
             self.beta = 0
+    
+    def allocate_torch_meomry(self) -> None:
+        self.atorch = torch.as_tensor(self.a, device = 'cuda')
+        del self.a
+        self.btorch = torch.as_tensor(self.b, device = 'cuda')
+        del self.b
+        self.atorch_size = self.atorch.element_size() * self.atorch.nelement()
+        self.btorch_size = self.btorch.element_size() * self.btorch.nelement()
+        self.total_torch_memory = self.atorch_size + self.btorch_size
 
     def setDtype(self, dataType) -> None:
         if dataType == "float32":
@@ -213,8 +222,9 @@ class ContractionProfiler:
         cutensor_default_patient = self.profile_cutensor(-6)
         # cuquantum = self.profile_cuquantum()
         cuquantum = [float('inf'), float('inf')]
-        tensordot = self.profile_tensordot()
         einsum = self.profile_einsum(self.dimensions.con_type)
+        self.allocate_torch_meomry()
+        tensordot = self.profile_tensordot()
 
         correctness = self.check_correctness(-4)
 
@@ -242,8 +252,6 @@ class ContractionProfiler:
         return [baseline_CPU/fastest_CPU, baseline_GPU/fastest_GPU]
     
     def cleanup(self) -> None:
-        del self.a
-        del self.b
         del self.c
         del self.atorch
         del self.btorch
