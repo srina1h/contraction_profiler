@@ -37,13 +37,14 @@ class ContractionProfiler:
             self.a = cupy.random.random([self.extent[i] for i in self.mode_a])
             self.b = cupy.random.random([self.extent[i] for i in self.mode_b])
             self.c = cupy.random.random([self.extent[i] for i in self.mode_c])
+
+            self.a = self.a.astype(self.dtype)
+            self.b = self.b.astype(self.dtype)
+            self.c = self.c.astype(self.dtype)
         except:
             print("Memory allocation error")
             self.hasCrashed = True
         else:
-            self.a = self.a.astype(self.dtype)
-            self.b = self.b.astype(self.dtype)
-            self.c = self.c.astype(self.dtype)
 
             # self.atorch = torch.as_tensor(self.a, device = 'cuda')
             # self.btorch = torch.as_tensor(self.b, device = 'cuda')
@@ -60,10 +61,8 @@ class ContractionProfiler:
     
     def allocate_torch_meomry(self) -> None:
         del self.c
-        self.atorch = torch.as_tensor(self.a, device = 'cuda')
-        del self.a
-        self.btorch = torch.as_tensor(self.b, device = 'cuda')
-        del self.b
+        self.atorch = torch.fromDLpack(self.a)
+        self.btorch = torch.fromDLpack(self.b)
         self.atorch_size = self.atorch.element_size() * self.atorch.nelement()
         self.btorch_size = self.btorch.element_size() * self.btorch.nelement()
         self.total_torch_memory = self.atorch_size + self.btorch_size
