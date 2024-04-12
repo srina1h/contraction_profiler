@@ -61,8 +61,8 @@ class ContractionProfiler:
     
     def allocate_torch_meomry(self) -> None:
         del self.c
-        self.atorch = torch.fromDLpack(self.a)
-        self.btorch = torch.fromDLpack(self.b)
+        self.atorch = torch.from_dlpack(self.a)
+        self.btorch = torch.from_dlpack(self.b)
         self.atorch_size = self.atorch.element_size() * self.atorch.nelement()
         self.btorch_size = self.btorch.element_size() * self.btorch.nelement()
         self.total_torch_memory = self.atorch_size + self.btorch_size
