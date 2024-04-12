@@ -59,6 +59,7 @@ class ContractionProfiler:
             self.beta = 0
     
     def allocate_torch_meomry(self) -> None:
+        del self.c
         self.atorch = torch.as_tensor(self.a, device = 'cuda')
         del self.a
         self.btorch = torch.as_tensor(self.b, device = 'cuda')
@@ -252,7 +253,6 @@ class ContractionProfiler:
         return [baseline_CPU/fastest_CPU, baseline_GPU/fastest_GPU]
     
     def cleanup(self) -> None:
-        del self.c
         del self.atorch
         del self.btorch
         del self.mode_a
