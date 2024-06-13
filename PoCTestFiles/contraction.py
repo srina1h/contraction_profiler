@@ -10,7 +10,7 @@ dtype = numpy.float32
 mode_a = ('a', 'b')
 mode_b = ('b', 'c', 'd')
 mode_c = ('a', 'c', 'd')
-extent = {'a': 100, 'b': 200, 'c': 100, 'd': 100}
+extent = {'a': 12, 'b': 20, 'c': 8, 'd': 20}
 con_type = "ab * bcd -> acd"
 
 # mode_a = ('a', 'b', 'c')
@@ -41,12 +41,12 @@ def con():
         cutensor.contraction(alpha, a, desc_a, mode_a, b, desc_b, mode_b, beta, c, desc_c, mode_c, algo = -2)
 
 torch.cuda.cudart().cudaProfilerStart()
-perf = cupyx.time.repeat(con,n_warmup=1, n_repeat=5)
+perf = cupyx.time.repeat(con,n_warmup=1, n_repeat=1)
 torch.cuda.cudart().cudaProfilerStop()
 
-total_flops = 2 * numpy.prod(numpy.array(list(extent.values())))
-elapsed = perf.gpu_times.mean()
+# total_flops = 2 * numpy.prod(numpy.array(list(extent.values())))
+# elapsed = perf.gpu_times.mean()
 
-print('dtype: {}'.format(numpy.dtype(dtype).name))
-print(perf)
-print('GFLOPS: {}'.format(total_flops / elapsed / 1e9))
+# print('dtype: {}'.format(numpy.dtype(dtype).name))
+# print(perf)
+# print('GFLOPS: {}'.format(total_flops / elapsed / 1e9))
