@@ -43,13 +43,13 @@ b = time.time()
 
 print("time for contraction: "+str(b-a))
 
-def con():
-    with nvtx.annotate(con_type, color = "purple"):
-        cutensor.contraction(alpha, a, desc_a, mode_a, b, desc_b, mode_b, beta, c, desc_c, mode_c, algo = -2)
+# def con():
+#     with nvtx.annotate(con_type, color = "purple"):
+#         cutensor.contraction(alpha, a, desc_a, mode_a, b, desc_b, mode_b, beta, c, desc_c, mode_c, algo = -2)
 
-torch.cuda.cudart().cudaProfilerStart()
-perf = cupyx.time.repeat(con,n_warmup=1, n_repeat=1)
-torch.cuda.cudart().cudaProfilerStop()
+# torch.cuda.cudart().cudaProfilerStart()
+# perf = cupyx.time.repeat(con,n_warmup=1, n_repeat=1)
+# torch.cuda.cudart().cudaProfilerStop()
 
 # total_flops = 2 * numpy.prod(numpy.array(list(extent.values())))
 # elapsed = perf.gpu_times.mean()
