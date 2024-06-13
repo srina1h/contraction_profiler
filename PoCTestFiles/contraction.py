@@ -4,6 +4,7 @@ from cupyx import cutensor
 import cupyx.time
 import nvtx
 import torch
+import time
 
 dtype = numpy.float32
 
@@ -35,6 +36,12 @@ mode_b = cutensor.create_mode(*mode_b)
 mode_c = cutensor.create_mode(*mode_c)
 alpha = 1.1
 beta = 0
+
+a = time.time()
+cutensor.contraction(alpha, a, desc_a, mode_a, b, desc_b, mode_b, beta, c, desc_c, mode_c, algo = -2)
+b = time.time()
+
+print("time for contraction: "+str(b-a))
 
 def con():
     with nvtx.annotate(con_type, color = "purple"):
