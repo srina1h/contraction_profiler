@@ -37,11 +37,11 @@ mode_c = cutensor.create_mode(*mode_c)
 alpha = 1.1
 beta = 0
 
-a = time.time()
+at = time.time()
 cutensor.contraction(alpha, a, desc_a, mode_a, b, desc_b, mode_b, beta, c, desc_c, mode_c, algo = -2)
-b = time.time()
+bt = time.time()
 
-print("time for contraction: "+str(b-a))
+print("time for contraction: "+str(bt-at))
 
 # def con():
 #     with nvtx.annotate(con_type, color = "purple"):
