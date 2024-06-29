@@ -74,6 +74,9 @@ class ContractionProfiler:
         elif dataType == "float16":
             self.dtype = numpy.float16
             self.torchdType = torch.float16
+        elif dataType == "float64":
+            self.dtype = numpy.float64
+            self.torchdType = torch.float64
 
     def get_cutensor_algo(self, algo_number) -> str:
         if algo_number == -6:
@@ -279,5 +282,7 @@ class ContractionProfiler:
             dtype_size = 16
         elif dtype == "int8":
             dtype_size = 8
+        elif dtype == "float64":
+            dtype_size = 64
         
         return numpy.prod(numpy.array(dim)) * dtype_size/8
