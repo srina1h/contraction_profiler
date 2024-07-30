@@ -184,7 +184,7 @@ class ContractionProfiler:
     def profile_cutensor_direct_implemntation(self, con_type) -> list:
         def con():
             with nvtx.annotate(self.dimensions.con_type + "cutensor_direct" + self.contractionLabel, color = "purple"):
-                EinsumGeneral(self.parse_contype_cutensor_spec(con_type), self.a, self.b)
+                EinsumGeneral(self.parse_contype_cutensor_spec(con_type), self.atorch, self.btorch)
         
         torch.cuda.cudart().cudaProfilerStart()
         try:
