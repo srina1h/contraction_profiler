@@ -288,7 +288,7 @@ class ContractionProfiler:
         torch.cuda.empty_cache()
     
     def generate_memory_allocation_failure_return(self):
-        return [self.contractionLabel, [float('inf'), float('inf')], [float('inf'), float('inf')], [float('inf'), float('inf')], [float('inf'), float('inf')], [float('inf'), float('inf')], [float('inf'), float('inf')], [float('inf'), float('inf')], [float('inf'), float('inf')], False, "None", "None", [0,0], self.total_theoretical_memory, float('inf')]
+        return [self.contractionLabel, [float('inf'), float('inf')], [float('inf'), float('inf')], [float('inf'), float('inf')],[float('inf'), float('inf')], [float('inf'), float('inf')], [float('inf'), float('inf')], [float('inf'), float('inf')], [float('inf'), float('inf')], [float('inf'), float('inf')], False, "None", "None", [0,0], self.total_theoretical_memory, float('inf')]
     
     def calculate_array_theoretical_memory_requirement(self, dim: list, dtype: str):
         if dtype == "float32":
