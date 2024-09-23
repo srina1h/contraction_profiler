@@ -14,6 +14,7 @@ class ProfileMultiple:
             self.data = pd.read_excel(self.xlsx_file)
         self.output_filepath = output_filepath
         self.results = []
+        self.dimensions = []
         self.baseline = baseline
         self.profile()
         self.export()
